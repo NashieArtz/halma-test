@@ -51,7 +51,7 @@
                 </executions>
                 <configuration>
                     <!-- Replace "tXX" by your team number, e.g. for team 01 => "t01" -->
-                    <mainClass>ca.uqam.info.solanum.tXX.halma.view.DefaultConsoleLauncher</mainClass>
+                    <mainClass>ca.uqam.info.solanum.tXX.f24halma.view.DefaultConsoleLauncher</mainClass>
                 </configuration>
             </plugin>
 
@@ -64,7 +64,7 @@
                     <archive>
                         <manifest>
                             <!-- Replace "tXX" by your team number, e.g. for team 01 => "t01" -->
-                            <mainClass>ca.uqam.info.solanum.tXXR.halma.view.DefaultConsoleLauncher</mainClass>
+                            <mainClass>ca.uqam.info.solanum.tXX.f24halma.view.DefaultConsoleLauncher</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
