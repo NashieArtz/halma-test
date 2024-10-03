@@ -82,7 +82,7 @@ public class ModelImpl implements Model {
      */
     @Override
     public Board getBoard() {
-        return null;
+        return new BoardImpl();
     }
 
     /**
