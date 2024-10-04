@@ -1,22 +1,58 @@
 package ca.uqam.info.solanum.t14.f24halma.controller;
 
 import ca.uqam.info.solanum.inf2050.f24halma.controller.ModelFactory;
-import ca.uqam.info.solanum.inf2050.f24halma.model.Model;
+import ca.uqam.info.solanum.inf2050.f24halma.model.*;
+import ca.uqam.info.solanum.t14.f24halma.model.BoardImpl;
+import ca.uqam.info.solanum.t14.f24halma.model.ModelImpl;
+import java.util.HashSet;
+import java.util.Set;
 
 public class SquareModelFactory implements ModelFactory {
-    /**
-     * One and only model instantiation method that must be implemented by whatever model factory
-     * implementing class.
-     *
-     * @param baseSize as the side-length along all player bases.
-     * @param players  as the player names involved on the board. Must be an even number and
-     *                 compatible to created layout. Note: the created model's board always contains
-     *                 home-zones for the maximum allowed amount * of players for the requested
-     *                 layout.
-     * @return a Model conforming object, representing the characteristics of the given factory.
-     */
+
     @Override
-    public Model createModel(int baseSize, String[] players) {
-        return null;
+    public ModelImpl createModel(int baseSize, String[] players) throws ModelInitializationException {
+        if (players.length % 2 != 0) {
+            throw new ModelInitializationException("Le nombre de joueurs doit être un nombre pair.");
+        }
+
+        // Taille adaptee du plateau
+        int boardSize = baseSize * baseSize;
+
+        // Créer le plateau de jeu Halma
+        Set<Field> allFields = createFields(boardSize); // plateau
+        Set<Field> homeFields = createHomeFields(baseSize, players.length); // zone de chaque joueur
+
+        Board board = new BoardImpl();
+        return new ModelImpl() {
+            @Override
+            public Set<Field> getPlayerFields(int playerIndex) {
+                return null;
+            }
+
+            @Override
+            public int getCurrentPlayer() {
+                return players.length;
+            }
+
+            @Override
+            public boolean isClear(Field field) throws FieldException {
+                return false;
+            }
+        };
+    }
+
+    private Set<Field> createFields(int boardSize) {
+        Set<Field> fields = new HashSet<>();
+        // Logique pour créer tous les champs basés sur la taille de base
+        // Exemple : ajouter des objets Field à l'ensemble fields
+        return fields; // Retourner les champs créés
+    }
+
+    private Set<Field> createHomeFields(int baseSize, int numberOfPlayers) {
+        Set<Field> homeFields = new HashSet<>();
+        // Logique pour créer les zones de départ pour le nombre de joueurs
+        // Exemple : ajouter des objets Field représentant les zones de départ
+        return homeFields; // Retourner les zones de départ créées
     }
 }
+
