@@ -15,11 +15,8 @@ public class SquareModelFactory implements ModelFactory {
             throw new ModelInitializationException("Le nombre de joueurs doit être un nombre pair.");
         }
 
-        // Taille adaptee du plateau
-        int boardSize = baseSize * baseSize;
-
         // Créer le plateau de jeu Halma
-        Set<Field> allFields = createFields(boardSize); // plateau
+        Set<Field> allFields = createFields(baseSize*baseSize); // plateau
         Set<Field> homeFields = createHomeFields(baseSize, players.length); // zone de chaque joueur
 
         Board board = new BoardImpl();
@@ -28,7 +25,7 @@ public class SquareModelFactory implements ModelFactory {
             public Set<Field> getPlayerFields(int playerIndex) {
                 return null;
             }
-
+            
             @Override
             public int getCurrentPlayer() {
                 return players.length;
