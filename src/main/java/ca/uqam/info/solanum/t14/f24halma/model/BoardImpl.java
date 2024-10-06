@@ -16,7 +16,6 @@ public class BoardImpl implements Board {
         int boardSize = baseSize * 3; // Calculer la taille du plateau
         fields = new Field[boardSize][boardSize];
         playerBaseFields = new Field[players.length][]; // Initialisation des cases de base
-        System.out.println(baseSize);
 
         // Initialisation des cases sur le plateau et des cases de base pour chaque joueur
         for (int i = 0; i < players.length; i++) {
@@ -26,7 +25,6 @@ public class BoardImpl implements Board {
                 int xCoordinate = baseSize; // Coordonnée x
                 int yCoordinate = j; // Coordonnée y
                 playerBaseFields[i][j] = new Field(xCoordinate, yCoordinate);
-                System.out.println("Player " + i + " Base Field: " + xCoordinate + ", " + yCoordinate);
             }
         }
 
