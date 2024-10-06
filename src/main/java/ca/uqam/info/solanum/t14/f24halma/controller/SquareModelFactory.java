@@ -12,7 +12,9 @@ public class SquareModelFactory implements ModelFactory {
     @Override
     public ModelImpl createModel(int baseSize, String[] players) throws ModelInitializationException {
 
-
+        if(baseSize > 33) {
+            throw new ModelInitializationException("La baseSize ne peut être de plus de 33.");
+        }
 
         if (players.length % 2 != 0) {
             throw new ModelInitializationException("Le nombre de joueurs doit être un nombre pair.");
@@ -21,6 +23,7 @@ public class SquareModelFactory implements ModelFactory {
         // Créer le plateau de jeu Halma
         Set<Field> allFields = createFields(baseSize*baseSize); // plateau
         Set<Field> homeFields = createHomeFields(baseSize, players.length); // zone de chaque joueur
+
 
         Board board = new BoardImpl(baseSize, players);
         return new ModelImpl(baseSize,players);

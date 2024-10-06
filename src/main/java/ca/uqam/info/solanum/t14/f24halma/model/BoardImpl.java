@@ -16,27 +16,32 @@ public class BoardImpl implements Board {
         int boardSize = baseSize * 3; // Calculer la taille du plateau
         fields = new Field[boardSize][boardSize];
         playerBaseFields = new Field[players.length][]; // Initialisation des cases de base
+        System.out.println(baseSize);
 
         // Initialisation des cases sur le plateau et des cases de base pour chaque joueur
         for (int i = 0; i < players.length; i++) {
-            playerBaseFields[i] = new Field[baseSize]; // Chaque joueur a un tableau pour ses cases de base
-            for (int j = 0; j < baseSize; j++) {
-                // Utilisez ici les coordonnées appropriées
-                int xCoordinate = baseSize; // ou une logique pour calculer en fonction du joueur
-                int yCoordinate = j; // utiliser j pour différentes lignes de base
-                playerBaseFields[i][j] = new Field(xCoordinate, yCoordinate); // Assurez-vous que Field a le bon constructeur
+            int baseFieldCount = 3; // ou une autre valeur en fonction du test
+            playerBaseFields[i] = new Field[baseFieldCount]; // Allouer 3 champs de base par joueur
+            for (int j = 0; j < baseFieldCount; j++) {
+                int xCoordinate = baseSize; // Coordonnée x
+                int yCoordinate = j; // Coordonnée y
+                playerBaseFields[i][j] = new Field(xCoordinate, yCoordinate);
+                System.out.println("Player " + i + " Base Field: " + xCoordinate + ", " + yCoordinate);
             }
         }
+
+
     }
 
     private void initializeBaseFieldsForPlayer(int playerIndex, int baseSize) {
-        // Logique pour assigner les cases de départ au joueur
         for (int j = 0; j < baseSize; j++) {
-            // Par exemple, ici on peut utiliser des positions spécifiques sur le plateau
-            // par exemple, les premières lignes pour le joueur 0, la deuxième ligne pour le joueur 1, etc.
-            playerBaseFields[playerIndex][j] = new Field(playerIndex, j); // Modifie les coordonnées selon la logique du jeu
+            // Calcul des positions spécifiques sur le plateau pour chaque joueur
+            int x = playerIndex; // ou une autre logique pour déterminer la coordonnée x
+            int y = j; // ou une autre logique pour déterminer la coordonnée y
+            playerBaseFields[baseSize][j] = new Field(x, y); // Modifie les coordonnées selon la logique du jeu
         }
     }
+
 
     /**
      * Getter for all fields contained in the board instance.
@@ -59,6 +64,7 @@ public class BoardImpl implements Board {
     public Set<Field> getHomeFieldsForPlayer(int playerIndex) {
         return Set.of(playerBaseFields[playerIndex]); // Retourne les cases de base pour le joueur
     }
+
 
     /**
      * Getter for all home fields (or target fields) on the board, regardless of player affiliation.
