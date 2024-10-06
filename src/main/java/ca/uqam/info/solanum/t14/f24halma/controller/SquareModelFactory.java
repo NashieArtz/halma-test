@@ -11,6 +11,9 @@ public class SquareModelFactory implements ModelFactory {
 
     @Override
     public ModelImpl createModel(int baseSize, String[] players) throws ModelInitializationException {
+
+
+
         if (players.length % 2 != 0) {
             throw new ModelInitializationException("Le nombre de joueurs doit être un nombre pair.");
         }
@@ -19,23 +22,8 @@ public class SquareModelFactory implements ModelFactory {
         Set<Field> allFields = createFields(baseSize*baseSize); // plateau
         Set<Field> homeFields = createHomeFields(baseSize, players.length); // zone de chaque joueur
 
-        Board board = new BoardImpl();
-        return new ModelImpl() {
-            @Override
-            public Set<Field> getPlayerFields(int playerIndex) {
-                return null;
-            }
-            
-            @Override
-            public int getCurrentPlayer() {
-                return players.length;
-            }
-
-            @Override
-            public boolean isClear(Field field) throws FieldException {
-                return false;
-            }
-        };
+        Board board = new BoardImpl(baseSize, players);
+        return new ModelImpl(baseSize,players);
     }
 
     private Set<Field> createFields(int boardSize) {
