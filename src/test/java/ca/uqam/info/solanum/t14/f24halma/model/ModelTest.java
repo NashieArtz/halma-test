@@ -3,17 +3,26 @@ package ca.uqam.info.solanum.t14.f24halma.model;
 import ca.uqam.info.solanum.inf2050.f24halma.model.AbstractModelTest;
 import ca.uqam.info.solanum.inf2050.f24halma.model.Model;
 
+/**
+ * Classe de test pour le modèle de jeu.
+ *
+ * Cette classe étend AbstractModelTest et fournit un modèle valide pour les tests.
+ */
 public class ModelTest extends AbstractModelTest {
-    private Model model;  // L'objet Model
+    private Model model;  // Initialisation d'instance
 
     /**
-     * Must return a valid model object. Board layout and players do not matter.
+     * Methode heritee
      *
-     * @return a model object.
+     * Cette méthode doit retourner un objet modèle valide. La configuration du plateau et des joueurs n'a pas
+     * d'importance pour ce test.
+     *
+     * @return un nouvel objet ModelImpl.
      */
     @Override
     public Model getModel() {
-        String[] players = {"Alice", "Bob"}; // Assurez-vous d'avoir un tableau de noms de joueurs valide.
-        return new ModelImpl(3, players); // 3 est la taille de base, peut être modifié selon le besoin.
+        String[] players = {"Alice", "Bob"}; // Tableau des noms de joueur
+        return new ModelImpl(3, players); // nouveau ModelImpl
     }
 }
+

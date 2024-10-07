@@ -8,11 +8,24 @@ import ca.uqam.info.solanum.inf2050.f24halma.model.Model;
 import java.util.Arrays;
 import java.util.Set;
 
+/**
+ * Implémentation du modèle de jeu.
+ *
+ * Cette classe gère les joueurs, le plateau de jeu et les interactions entre eux.
+ */
 public class ModelImpl implements Model {
-    private int playerIndex;
-    private final String[] playerNames;
-    private Board board;
+    private int playerIndex;          // L'index du joueur actuel
+    private final String[] playerNames; // Noms des joueurs
+    private final Board board;        // Plateau de jeu
 
+    /**
+     * Constructeur de la classe ModelImpl.
+     *
+     * Ce constructeur initialise le modèle avec la taille de base spécifiée et les noms des joueurs.
+     *
+     * @param baseSize la taille de base du plateau.
+     * @param players  tableau des noms des joueurs.
+     */
     public ModelImpl(int baseSize, String[] players) {
         this.playerNames = players.clone();
         this.playerIndex = 0;  // Le joueur 0 commence par défaut
@@ -23,34 +36,30 @@ public class ModelImpl implements Model {
     }
 
     /**
-     * Occupies the given target field to the given player, as specified by their id.
+     * Occupe le champ cible par le joueur
      *
-     * @param playerIndex as the index of the player who will occupy the field. Must be in valid
-     *                    range, i.e. not below 0 and not exceeding player indexes.
-     * @param field       as the field instance to assign to the player.
-     * @throws FieldException in case the specified field is already occupied.
+     * @param playerIndex l'index du joueur qui va occuper le champ specifie
+     * @param field le champ vise par le joueur
+     * @throws FieldException en cas de champ déjà occupé.
      */
     @Override
     public void occupyField(int playerIndex, Field field) throws FieldException {
-
     }
 
     /**
-     * Clears a given field from any potential player occupation.
+     * Vide le champ donné en parametre.
      *
-     * @param field as the target field to clear from any potential occupation.
-     * @throws FieldException in case the specified field is not currently occupied.
+     * @param field le champ cible à vider de toute occupation potentielle.
+     * @throws FieldException en cas de champ actuellement non occupé.
      */
     @Override
     public void clearField(Field field) throws FieldException {
-
     }
 
     /**
-     * Changes the pointer to the current player.
+     * Setter vers le joueur specifie en parametre
      *
-     * @param playerIndex as the index of the player who will be new current player. Must be in valid
-     *                    range, i.e. not below 0 and not exceed player indexes.
+     * @param playerIndex l'index du joueur cible par le setter
      */
     @Override
     public void setCurrentPlayer(int playerIndex) {
@@ -58,9 +67,9 @@ public class ModelImpl implements Model {
     }
 
     /**
-     * Returns the plain string names of all players in order participating in this model instance.
+     * Retourne les noms des joueurs sous forme de tableau de chaînes dans l'ordre.
      *
-     * @return copy of player string names in order.
+     * @return une copie des noms des joueurs dans l'ordre.
      */
     @Override
     public String[] getPlayerNames() {
@@ -68,20 +77,20 @@ public class ModelImpl implements Model {
     }
 
     /**
-     * Returns all fields currently occupied by the requested player, identified by player index.
+     * Getter des zones occupees par le joueur specifie en parametre
      *
-     * @param playerIndex as the player for whom the occupied fields are to be identified.
-     * @return unmodifiable set of all fields currently occupied by a player.
+     * @param playerIndex l'index du joueur pour lequel on verifie les zones occupees
+     * @return un ensemble de tous les champs actuellement occupés par un joueur.
      */
     @Override
     public Set<Field> getPlayerFields(int playerIndex) {
-        return Set.of();
+        return Set.of(); // Logique à implémenter
     }
 
     /**
-     * Getter for the index of the current player.
+     * Getter pour l'index du joueur actuel.
      *
-     * @return int representing the index of the current player.
+     * @return un int représentant l'index du joueur actuel.
      */
     @Override
     public int getCurrentPlayer() {
@@ -89,9 +98,9 @@ public class ModelImpl implements Model {
     }
 
     /**
-     * Returns read only representation of board, including position of all game elements.
+     * Getter pour le plateau sur lequel on joue
      *
-     * @return board instance of this model.
+     * @return l'instance du plateau de ce modèle.
      */
     @Override
     public Board getBoard() {
@@ -99,29 +108,39 @@ public class ModelImpl implements Model {
     }
 
     /**
-     * Returns true if the specified field is unoccupied.
+     * Verifie si le field en parametre est libre
      *
-     * @param field the field to look up. Must be a valid field on the board.
-     * @return true if the provided field exists and is unoccupied.
-     * @throws FieldException if the provided field is not a valid board position
+     * @param field le champ à vérifier. Doit être un champ valide sur le plateau.
+     * @return vrai si le champ fourni existe et est inoccupé.
+     * @throws FieldException si le champ fourni n'est pas une position valide sur le plateau.
      */
     @Override
     public boolean isClear(Field field) throws FieldException {
-        return false;
+        return false; // Logique à implémenter
     }
 
+    /**
+     * Methode pour verifier l'egalite des objets
+     *
+     * @param obj l'objet a verifier
+     * @return vrai si l'egalite est verifiee.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true; // Vérifie si c'est le même objet
-        if (!(obj instanceof ModelImpl)) return false; // Vérifie si l'objet est de type ModelImpl
+        if (!(obj instanceof ModelImpl other)) return false; // Vérifie si l'objet est de type ModelImpl
 
-        ModelImpl other = (ModelImpl) obj; // Cast de l'objet
         // Vérifie les joueurs
         return Arrays.equals(this.playerNames, other.playerNames) &&
                 this.playerIndex == other.playerIndex &&
-                this.board.equals(other.board); // Assurez-vous que BoardImpl a aussi un equals
+                this.board.equals(other.board); // verification des egalites
     }
 
+    /**
+     * Methode de hashage pour le code
+     *
+     * @return le resultat du hashage du code
+     */
     @Override
     public int hashCode() {
         int result = Arrays.hashCode(playerNames);
@@ -130,3 +149,4 @@ public class ModelImpl implements Model {
         return result;
     }
 }
+
