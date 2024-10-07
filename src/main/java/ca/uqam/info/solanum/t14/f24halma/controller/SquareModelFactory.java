@@ -40,7 +40,40 @@ public class SquareModelFactory implements ModelFactory {
         Set<Field> homeFields = createHomeFields(baseSize, players.length); // zone de chaque joueur
 
         Board board = new BoardImpl(baseSize, players);
-        return new ModelImpl(baseSize, players);
+        return new ModelImpl(board, players) {
+            /**
+             * Returns all fields currently occupied by the requested player, identified by player index.
+             *
+             * @param playerIndex as the player for whom the occupied fields are to be identified.
+             * @return unmodifiable set of all fields currently occupied by a player.
+             */
+            @Override
+            public Set<Field> getPlayerFields(int playerIndex) {
+                return Set.of();
+            }
+
+            /**
+             * Getter for the index of the current player.
+             *
+             * @return int representing the index of the current player.
+             */
+            @Override
+            public int getCurrentPlayer() {
+                return 0;
+            }
+
+            /**
+             * Returns true if the specified field is unoccupied.
+             *
+             * @param field the field to look up. Must be a valid field on the board.
+             * @return true if the provided field exists and is unoccupied.
+             * @throws FieldException if the provided field is not a valid board position
+             */
+            @Override
+            public boolean isClear(Field field) throws FieldException {
+                return false;
+            }
+        };
     }
 
     /**

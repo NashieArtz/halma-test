@@ -1,22 +1,38 @@
 package ca.uqam.info.solanum.t14.f24halma.model;
 
-import ca.uqam.info.solanum.inf2050.f24halma.model.Board;
 import ca.uqam.info.solanum.inf2050.f24halma.model.Field;
 import ca.uqam.info.solanum.inf2050.f24halma.model.FieldException;
 import ca.uqam.info.solanum.inf2050.f24halma.model.Model;
+import ca.uqam.info.solanum.inf2050.f24halma.model.Board;
 
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
- * Implémentation du modèle de jeu.
+ * Implementation du modele du jeu
  *
  * Cette classe gère les joueurs, le plateau de jeu et les interactions entre eux.
  */
 public class ModelImpl implements Model {
-    private int playerIndex;          // L'index du joueur actuel
     private final String[] playerNames; // Noms des joueurs
-    private final Board board;        // Plateau de jeu
+    private Map<Field, Integer> occupiedFields = Map.of(); // Champs occupés avec l'index du joueur
+    private int playerIndex;
+    private Board board;
+    private int currentPlayerIndex; // Index du joueur courant
+
+
+    /**
+     * Constructeur pour le test DefaultConsoleLauncher et SqareModelFactoryTest
+     * @param board
+     * @param playerNames
+     */
+    public ModelImpl(Board board, String[] playerNames) {
+        this.board = board; // Assurez-vous que 'board' n'est pas null ici
+        this.playerNames = playerNames.clone();
+        this.occupiedFields = new HashMap<>();
+        this.currentPlayerIndex = 0;
+    }
 
     /**
      * Constructeur de la classe ModelImpl.
@@ -36,87 +52,109 @@ public class ModelImpl implements Model {
     }
 
     /**
-     * Occupe le champ cible par le joueur
+     * Method to allow a player to occupy a field
      *
-     * @param playerIndex l'index du joueur qui va occuper le champ specifie
-     * @param field le champ vise par le joueur
-     * @throws FieldException en cas de champ déjà occupé.
+     * @param playerIndex index of the player who wants to occupy the specified field
+     * @param field       the field instance to assign to the player.
+     * @throws FieldException
      */
     @Override
     public void occupyField(int playerIndex, Field field) throws FieldException {
+        // Vérifie si le champ est déjà occupé
+        if (occupiedFields.containsKey(field)) {
+            throw new FieldException("Ce champ est déjà occupé.");
+        }
+        // Assigne le champ au joueur
+        occupiedFields.put(field, playerIndex);
     }
 
     /**
-     * Vide le champ donné en parametre.
+     * Method to clear the current field
      *
-     * @param field le champ cible à vider de toute occupation potentielle.
-     * @throws FieldException en cas de champ actuellement non occupé.
+     * @param field as the target field to clear from any potential occupation.
+     * @throws FieldException
      */
     @Override
     public void clearField(Field field) throws FieldException {
+        // Vérifie si le champ est occupé
+        if (!occupiedFields.containsKey(field)) {
+            throw new FieldException("Ce champ n'est pas occupé.");
+        }
+        // Supprime l'occupation du champ
+        occupiedFields.remove(field);
     }
 
     /**
-     * Setter vers le joueur specifie en parametre
+     * Setter to point to the current player
      *
-     * @param playerIndex l'index du joueur cible par le setter
+     * @param playerIndex Index of the specified player
      */
     @Override
     public void setCurrentPlayer(int playerIndex) {
-        this.playerIndex = playerIndex;
+        if (playerIndex < 0 || playerIndex >= playerNames.length) {
+            throw new IllegalArgumentException("Index de joueur invalide.");
+        }
+        currentPlayerIndex = playerIndex;
     }
 
     /**
-     * Retourne les noms des joueurs sous forme de tableau de chaînes dans l'ordre.
-     *
-     * @return une copie des noms des joueurs dans l'ordre.
-     */
-    @Override
-    public String[] getPlayerNames() {
-        return playerNames.clone();
-    }
-
-    /**
-     * Getter des zones occupees par le joueur specifie en parametre
-     *
-     * @param playerIndex l'index du joueur pour lequel on verifie les zones occupees
-     * @return un ensemble de tous les champs actuellement occupés par un joueur.
-     */
-    @Override
-    public Set<Field> getPlayerFields(int playerIndex) {
-        return Set.of(); // Logique à implémenter
-    }
-
-    /**
-     * Getter pour l'index du joueur actuel.
-     *
-     * @return un int représentant l'index du joueur actuel.
-     */
-    @Override
-    public int getCurrentPlayer() {
-        return playerIndex;
-    }
-
-    /**
-     * Getter pour le plateau sur lequel on joue
-     *
-     * @return l'instance du plateau de ce modèle.
+     * Getter for the game board
+     * @return board on which the game is played
      */
     @Override
     public Board getBoard() {
-        return board;  // Retourne le plateau initialisé
+        return board;
     }
 
     /**
-     * Verifie si le field en parametre est libre
+     * Returns true if the specified field is unoccupied.
      *
-     * @param field le champ à vérifier. Doit être un champ valide sur le plateau.
-     * @return vrai si le champ fourni existe et est inoccupé.
-     * @throws FieldException si le champ fourni n'est pas une position valide sur le plateau.
+     * @param field the field to look up. Must be a valid field on the board.
+     * @return true if the provided field exists and is unoccupied.
+     * @throws FieldException if the provided field is not a valid board position
      */
     @Override
     public boolean isClear(Field field) throws FieldException {
-        return false; // Logique à implémenter
+        return false;
+    }
+
+    /**
+     * Getter for the Names of all the players
+     *
+     * @return copy of the names of all the players
+     */
+    @Override
+    public String[] getPlayerNames() {
+        return playerNames.clone(); // Retourne une copie pour éviter la modification externe
+    }
+
+    /**
+     * Returns all fields currently occupied by the requested player, identified by player index.
+     *
+     * @param playerIndex as the player for whom the occupied fields are to be identified.
+     * @return unmodifiable set of all fields currently occupied by a player.
+     */
+    @Override
+    public Set<Field> getPlayerFields(int playerIndex) {
+        return Set.of();
+    }
+
+    /**
+     * Getter for the index of the current player.
+     *
+     * @return int representing the index of the current player.
+     */
+    @Override
+    public int getCurrentPlayer() {
+        return 0;
+    }
+
+    /**
+     * Getter for the current index of the player
+     * @return current index of the player
+     */
+    public int getCurrentPlayerIndex() {
+        return currentPlayerIndex;
     }
 
     /**
@@ -127,26 +165,11 @@ public class ModelImpl implements Model {
      */
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true; // Vérifie si c'est le même objet
-        if (!(obj instanceof ModelImpl other)) return false; // Vérifie si l'objet est de type ModelImpl
-
-        // Vérifie les joueurs
-        return Arrays.equals(this.playerNames, other.playerNames) &&
-                this.playerIndex == other.playerIndex &&
-                this.board.equals(other.board); // verification des egalites
-    }
-
-    /**
-     * Methode de hashage pour le code
-     *
-     * @return le resultat du hashage du code
-     */
-    @Override
-    public int hashCode() {
-        int result = Arrays.hashCode(playerNames);
-        result = 31 * result + playerIndex; // Multiplier par un nombre premier pour réduire les collisions
-        result = 31 * result + (board != null ? board.hashCode() : 0); // Ajoute le hashcode du board
-        return result;
+        if (this == obj) return true;
+        if (!(obj instanceof ModelImpl)) return false;
+        ModelImpl other = (ModelImpl) obj;
+        return board.equals(other.board) && currentPlayerIndex == other.currentPlayerIndex;
     }
 }
+
 
