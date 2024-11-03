@@ -22,20 +22,8 @@ public class BoardImpl implements Board {
      */
     public BoardImpl(int baseSize, String[] players) {
         int boardSize = baseSize * 3; // Calculer la taille des dimensions du plateau
-        fields = new Field[boardSize][boardSize]; // Calcul de la taille totale du plateau
+        fields = new Field[boardSize][boardSize]; // Allocation du plateau de jeu
         playerBaseFields = new Field[players.length][baseSize * baseSize]; // Allocation de la zone du joueur
-
-        // Initialisation des cases sur le plateau et des cases de base pour chaque joueur
-        for (int i = 0; i < players.length; i++) {
-            for (int j = 0; j < baseSize; j++) { // Parcours des lignes
-                for (int k = 0; k < baseSize; k++) { // Parcours des colonnes
-                    int xCoordinate = i * baseSize + j; // Coordonnée x de l'index du joueur
-                    int yCoordinate = i * baseSize + k; // Coordonnée y de l'index du joueur
-                    playerBaseFields[i][j * baseSize + k] = new Field(xCoordinate, yCoordinate); /* Taille de la zone
-                                                                                                 du joueur */
-                }
-            }
-        }
 
         // Initialisation des cases sur le plateau
         for (int i = 0; i < boardSize; i++) {
@@ -43,7 +31,25 @@ public class BoardImpl implements Board {
                 fields[i][j] = new Field(i, j); // Initialiser tous les champs du plateau
             }
         }
+
+        // Initialisation des cases de base pour chaque joueur
+        for (int i = 0; i < players.length; i++) {
+            // Assurez-vous que vous attribuez correctement les champs de base
+            for (int j = 0; j < baseSize; j++) { // Parcours des lignes
+                for (int k = 0; k < baseSize; k++) { // Parcours des colonnes
+                    int xCoordinate = i * baseSize + j; // Coordonnée x pour le joueur
+                    int yCoordinate = (players.length - 1 - i) * baseSize + k; // Coordonnée y pour éviter le chevauchement
+
+                    // Vérifier les limites pour éviter un débordement
+                    if (xCoordinate < boardSize && yCoordinate < boardSize) {
+                        playerBaseFields[i][j * baseSize + k] = new Field(xCoordinate, yCoordinate);
+                    }
+                }
+            }
+        }
     }
+
+
 
     /**
      * Méthode pour initialiser la zone du joueur.
