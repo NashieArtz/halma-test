@@ -21,7 +21,7 @@ public class BoardImpl implements Board {
      * @param players  Un tableau de chaînes représentant les joueurs.
      */
     public BoardImpl(int baseSize, String[] players) {
-        int boardSize = baseSize * 3; // Calculer la taille des dimensions du plateau
+        int boardSize = baseSize * baseSize; // Calculer la taille des dimensions du plateau
         fields = new Field[boardSize][boardSize]; // Allocation du plateau de jeu
         playerBaseFields = new Field[players.length][baseSize * baseSize]; // Allocation de la zone du joueur
 

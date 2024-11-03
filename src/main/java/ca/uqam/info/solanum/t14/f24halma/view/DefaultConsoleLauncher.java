@@ -24,6 +24,10 @@ import java.util.List;
 public class DefaultConsoleLauncher {
     static int baseSize;
     static String[] players;
+    static String player1;
+    static String player2;
+    static String player3;
+    static String player4;
 
     /**
      * Default Constructor.
@@ -38,7 +42,7 @@ public class DefaultConsoleLauncher {
     }
 
     public DefaultConsoleLauncher(int baseSize, String player1, String player2, String player3, String player4) {
-        DefaultConsoleLauncher.baseSize = baseSize;
+        baseSize = baseSize;
         players = new String[4];
         players[0] = player1;
         players[1] = player2;
@@ -53,7 +57,7 @@ public class DefaultConsoleLauncher {
      * @param args no arguments required.
      */
     public static void main(String[] args) {
-        DefaultConsoleLauncher launcher = new DefaultConsoleLauncher(3, "Max", "Ryan");
+        DefaultConsoleLauncher launcher = new DefaultConsoleLauncher(3, "Max", "Vivian");
 
         //    runTp01();
         runTp02(players);
