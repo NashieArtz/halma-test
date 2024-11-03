@@ -1,7 +1,8 @@
 package ca.uqam.info.solanum.t14.f24halma.view;
 
-import ca.uqam.info.solanum.t14.f24halma.model.BoardImpl;
+import ca.uqam.info.solanum.inf2050.f24halma.model.Board;
 import ca.uqam.info.solanum.t14.f24halma.model.ModelImpl;
+import ca.uqam.info.solanum.t14.f24halma.model.BoardImpl;
 import ca.uqam.info.solanum.inf2050.f24halma.controller.Controller;
 import ca.uqam.info.solanum.inf2050.f24halma.model.ModelReadOnly;
 import ca.uqam.info.solanum.inf2050.f24halma.controller.ModelFactory;
@@ -21,15 +22,30 @@ import java.util.List;
  * Sample console launcher, to start TP code.
  */
 public class DefaultConsoleLauncher {
-
+    static int baseSize;
+    static String[] players;
 
     /**
      * Default Constructor.
      */
-    public DefaultConsoleLauncher() {
-
+    public DefaultConsoleLauncher(int baseSize, String player1, String player2) {
+        DefaultConsoleLauncher.baseSize = baseSize;
+        players = new String[2];
+        players[0] = player1;
+        players[1] = player2;
+        new BoardImpl(baseSize, players);
+        new ModelImpl(baseSize, players);
     }
 
+    public DefaultConsoleLauncher(int baseSize, String player1, String player2, String player3, String player4) {
+        DefaultConsoleLauncher.baseSize = baseSize;
+        players = new String[4];
+        players[0] = player1;
+        players[1] = player2;
+        players[2] = player3;
+        players[3] = player4;
+        new BoardImpl(baseSize, players);
+    }
 
     /**
      * Main class for the console launcher.
@@ -37,9 +53,10 @@ public class DefaultConsoleLauncher {
      * @param args no arguments required.
      */
     public static void main(String[] args) {
+        DefaultConsoleLauncher launcher = new DefaultConsoleLauncher(3, "Max", "Ryan");
 
         //    runTp01();
-        runTp02(args);
+        runTp02(players);
         //    runTp03();
     }
 
@@ -59,31 +76,33 @@ public class DefaultConsoleLauncher {
         System.out.println(visualizer.stringifyModel(model));
     }
 
-    private static void runTp02(String[] args) {
-
-        // Parse runtime parameters
-        int baseSize = Integer.parseInt(args[0]);
-        String[] playerNames = Arrays.copyOfRange(args, 1, args.length);
+    private static void runTp02(String[] players) {
+        // Initialiser `baseSize` et `playerNames`
+        String[] playerNames = Arrays.copyOfRange(players, 0, players.length);
         ModelFactory modelFactory = new SquareModelFactory();
 
-        // Set move selectors
-        MoveSelector[] moveSelectors = playerNamesToMoveSelectors(playerNames);
-        
-        // Initialize controller
-        Controller controller = new ControllerImpl(modelFactory, baseSize, playerNames);
+        // Créer le modèle et vérifier qu'il n'est pas nul
+        ModelReadOnly model = modelFactory.createModel(baseSize, playerNames);
+        if (model == null) {
+            throw new IllegalStateException("Le modèle créé par ModelFactory est nul.");
+        }
 
-        // Initialize visualizer
-        boolean useColours = true; // Set to false if you're on windows and textual output looks weird.
-        TextualVisualizer visualizer = new TextualVisualizer(useColours);
+        // Créer le contrôleur avec le modèle directement
+        Controller controller = new ControllerImpl(model);
+        if (controller.getModel() == null) {
+            throw new IllegalStateException("Le modèle n'a pas été transmis correctement au contrôleur.");
+        }
+        TextualVisualizer visualizer = new TextualVisualizer(true);
 
-        // Proceed until game end
+        // Reste du code pour exécuter le jeu
         while (!controller.isGameOver()) {
-            printAndRequestAndPerformAction(controller, visualizer, moveSelectors);
+            printAndRequestAndPerformAction(controller, visualizer, playerNamesToMoveSelectors(playerNames));
         }
 
         System.out.println(visualizer.stringifyModel(controller.getModel()));
         System.out.println("GAME OVER!");
     }
+
 
     private static void runTp03() {
         // Will be released with TP02 instructions.
@@ -105,6 +124,11 @@ public class DefaultConsoleLauncher {
     private static void printAndRequestAndPerformAction(Controller controller,
                                                         TextualVisualizer visualizer,
                                                         MoveSelector[] moveSelectors) {
+
+        ModelReadOnly model = controller.getModel();
+        if (model == null) {
+            throw new IllegalStateException("Le modèle du contrôleur est nul.");
+        }
 
         // Clear the screen (Works only on native ANSI terminals, not in IDE / windows)
         visualizer.clearScreen(); // Comment out this line if you're on windows.
@@ -128,6 +152,11 @@ public class DefaultConsoleLauncher {
             selectedMove = availableMoves.getFirst();
         }
         System.out.println(visualizer.getChoseMoveAnnouncement(selectedMove, currentPlayer));
+
+
+
+        // Continue with visualizations and moves
+        System.out.println(visualizer.stringifyModel(model));
 
         // Perform selected action:
         controller.performMove(selectedMove);

@@ -9,9 +9,13 @@ import ca.uqam.info.solanum.t14.f24halma.model.ModelImpl;
 import java.util.List;
 
 public class ControllerImpl implements Controller {
+    private final ModelReadOnly model;
 
-    public ControllerImpl(ModelFactory i, int j, String[] k) {
-
+    public ControllerImpl(ModelReadOnly model) {
+        if (model == null) {
+            throw new IllegalArgumentException("Le modèle fourni ne doit pas être nul.");
+        }
+        this.model = model;
     }
 
     /**
@@ -23,8 +27,11 @@ public class ControllerImpl implements Controller {
      */
     @Override
     public ModelReadOnly getModel() {
-        return null;
+        return this.model;
     }
+
+    // Méthodes de la classe
+
 
     /**
      * Generator for all valid actions of the current player. Each action object represents an atomic
