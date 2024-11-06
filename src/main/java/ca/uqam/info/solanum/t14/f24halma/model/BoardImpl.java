@@ -21,9 +21,14 @@ public class BoardImpl implements Board {
      * @param players  Un tableau de chaînes représentant les joueurs.
      */
     public BoardImpl(int baseSize, String[] players) {
+        int difference = 0;
+
+        for (int l = 1; l == baseSize; l++) {
+            difference = l++;
+        }
         int boardSize = baseSize * baseSize; // Calculer la taille des dimensions du plateau
         fields = new Field[boardSize][boardSize]; // Allocation du plateau de jeu
-        playerBaseFields = new Field[players.length][baseSize * baseSize]; // Allocation de la zone du joueur
+        playerBaseFields = new Field[players.length][baseSize * baseSize - difference]; // Allocation de la zone du joueur
 
         // Initialisation des cases sur le plateau
         for (int i = 0; i < boardSize; i++) {
@@ -48,8 +53,6 @@ public class BoardImpl implements Board {
             }
         }
     }
-
-
 
     /**
      * Méthode pour initialiser la zone du joueur.

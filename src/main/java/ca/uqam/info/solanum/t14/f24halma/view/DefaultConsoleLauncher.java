@@ -49,6 +49,7 @@ public class DefaultConsoleLauncher {
         players[2] = player3;
         players[3] = player4;
         new BoardImpl(baseSize, players);
+        new ModelImpl(baseSize, players);
     }
 
     /**
@@ -57,7 +58,19 @@ public class DefaultConsoleLauncher {
      * @param args no arguments required.
      */
     public static void main(String[] args) {
-        DefaultConsoleLauncher launcher = new DefaultConsoleLauncher(3, "Max", "Vivian");
+        if (args.length < 3) {
+            System.out.println("Erreur : veuillez fournir la taille de base et au moins deux noms de joueurs.");
+            return;
+        }
+
+        baseSize = Integer.parseInt(args[0]);
+        players = new String[args.length-1];
+        for (int i = 1; i < args.length; i++) {
+            players[i - 1] = args[i];
+        }
+
+        DefaultConsoleLauncher launcher = new DefaultConsoleLauncher(baseSize, players[0], players[1]);
+
 
         //    runTp01();
         runTp02(players);
@@ -66,9 +79,11 @@ public class DefaultConsoleLauncher {
 
 
     private static void runTp01() {
+        String[] playerNames = new String[players.length];
         // Set default parameters
-        int baseSize = 3;
-        String[] playerNames = new String[] {"Max", "Ryan"};
+        for(int i=0; i< players.length; i++) {
+            playerNames[i] = players[i];
+        }
 
         // Create a model (read only access) for the provided game parameters
         ModelFactory modelFactory = new SquareModelFactory(); // TODO: Create this class and import it.
@@ -81,8 +96,9 @@ public class DefaultConsoleLauncher {
     }
 
     private static void runTp02(String[] players) {
-        // Initialiser `baseSize` et `playerNames`
+
         String[] playerNames = Arrays.copyOfRange(players, 0, players.length);
+        System.out.println(Arrays.toString(playerNames));
         ModelFactory modelFactory = new SquareModelFactory();
 
         // Créer le modèle et vérifier qu'il n'est pas nul
@@ -149,12 +165,16 @@ public class DefaultConsoleLauncher {
         List<Move> availableMoves = controller.getPlayerMoves();
         // if more than one move, ask selector
         Move selectedMove = null;
-        if (availableMoves.size() > 1) {
-            selectedMove = moveSelectors[currentPlayer].selectMove(availableMoves);
+        if (!availableMoves.isEmpty()) {
+            if (availableMoves.size() > 1) {
+                selectedMove = moveSelectors[currentPlayer].selectMove(availableMoves);
+            } else {
+                selectedMove = availableMoves.getFirst();
+            }
         } else {
-            // If only one move available, directly apply it.
-            selectedMove = availableMoves.getFirst();
+            System.out.println("Aucun mouvement disponible pour le joueur actuel.");
         }
+
         System.out.println(visualizer.getChoseMoveAnnouncement(selectedMove, currentPlayer));
 
 
