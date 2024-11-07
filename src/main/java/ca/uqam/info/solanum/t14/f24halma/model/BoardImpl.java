@@ -26,9 +26,9 @@ public class BoardImpl implements Board {
         for (int l = 1; l == baseSize; l++) {
             difference = l++;
         }
-        int boardSize = baseSize * baseSize; // Calculer la taille des dimensions du plateau
+        int boardSize = baseSize * 3; // Calculer la taille des dimensions du plateau
         fields = new Field[boardSize][boardSize]; // Allocation du plateau de jeu
-        playerBaseFields = new Field[players.length][baseSize * baseSize - difference]; // Allocation de la zone du joueur
+        playerBaseFields = new Field[players.length][baseSize * baseSize]; // Allocation de la zone du joueur
 
         // Initialisation des cases sur le plateau
         for (int i = 0; i < boardSize; i++) {
@@ -42,12 +42,58 @@ public class BoardImpl implements Board {
             // Assurez-vous que vous attribuez correctement les champs de base
             for (int j = 0; j < baseSize; j++) { // Parcours des lignes
                 for (int k = 0; k < baseSize; k++) { // Parcours des colonnes
-                    int xCoordinate = i * baseSize + j; // Coordonnée x pour le joueur
-                    int yCoordinate = (players.length - 1 - i) * baseSize + k; // Coordonnée y pour éviter le chevauchement
+                    if(i == 0) {
+                        int xCoordinate = j; // Coordonnée x pour le joueur
+                        int yCoordinate = k - j;
+                        if(xCoordinate<0 || xCoordinate > boardSize - 1) {
+                            xCoordinate = 0;
+                        } else if (yCoordinate < 0 || yCoordinate > boardSize - 1) {
+                            yCoordinate = 0; // Coordonnée y pour éviter le depassement
+                        }
+                        // Vérifier les limites pour éviter un débordement
+                        if (xCoordinate < boardSize && yCoordinate < boardSize) {
+                            playerBaseFields[i][j * baseSize + k] = new Field(xCoordinate, yCoordinate);
+                        }
 
-                    // Vérifier les limites pour éviter un débordement
-                    if (xCoordinate < boardSize && yCoordinate < boardSize) {
-                        playerBaseFields[i][j * baseSize + k] = new Field(xCoordinate, yCoordinate);
+                    } else if (i == 1) {
+                        int xCoordinate = (boardSize - 1) - j; // Coordonnée x pour le joueur
+                        int yCoordinate = (boardSize - 1) - k + j ; // Coordonnée y pour éviter le chevauchement
+                        if(yCoordinate < 0 || yCoordinate > boardSize - 1) {
+                            yCoordinate = boardSize - 1;
+                        } else if (xCoordinate < 0 || xCoordinate > boardSize - 1) {
+                            xCoordinate = boardSize - 1;
+                        }
+
+                        // Vérifier les limites pour éviter un débordement
+                        if ((xCoordinate < boardSize && yCoordinate < boardSize)) {
+                            playerBaseFields[i][j * baseSize + k] = new Field(xCoordinate, yCoordinate);
+                        }
+                    } else if (i == 2) {
+                        int xCoordinate = j; // Coordonnée x pour le joueur
+                        int yCoordinate = (boardSize - 1) - k + j; // Coordonnée y pour éviter le chevauchement
+                        if(xCoordinate < 0 || xCoordinate > boardSize - 1) {
+                            xCoordinate = 0;
+                        } else if (yCoordinate < 0 || yCoordinate > boardSize - 1) {
+                            yCoordinate = boardSize - 1; // Coordonnée y pour éviter le depassement
+                        }
+
+                        // Vérifier les limites pour éviter un débordement
+                        if (xCoordinate < boardSize && yCoordinate < boardSize) {
+                            playerBaseFields[i][j * baseSize + k] = new Field(xCoordinate, yCoordinate);
+                        }
+                    } else if (i == 3) {
+                        int xCoordinate = (boardSize - 1) - j; // Coordonnée x pour le joueur
+                        int yCoordinate = k - j; // Coordonnée y pour éviter le chevauchement
+                        if(xCoordinate<0 || xCoordinate > boardSize - 1) {
+                            xCoordinate = boardSize - 1;
+                        } else if (yCoordinate < 0 || yCoordinate > boardSize - 1) {
+                            yCoordinate = 0; // Coordonnée y pour éviter le depassement
+                        }
+
+                        // Vérifier les limites pour éviter un débordement
+                        if (xCoordinate < boardSize && yCoordinate < boardSize) {
+                            playerBaseFields[i][j * baseSize + k] = new Field(xCoordinate, yCoordinate);
+                        }
                     }
                 }
             }
@@ -145,5 +191,7 @@ public class BoardImpl implements Board {
         return Arrays.deepHashCode(fields); // Utilise deepHashCode pour un tableau 2D
     }
 }
+
+
 
 

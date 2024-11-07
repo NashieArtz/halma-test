@@ -31,7 +31,7 @@ public class SquareModelFactory implements ModelFactory {
             throw new ModelInitializationException("La baseSize ne peut être de plus de 33.");
         }
 
-        if (players.length % 2 != 0) {
+        if (players.length % 2 != 0 || players.length > 4) {
             throw new ModelInitializationException("Le nombre de joueurs doit être un nombre pair.");
         }
 

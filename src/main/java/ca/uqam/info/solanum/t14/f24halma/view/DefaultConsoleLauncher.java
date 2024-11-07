@@ -42,7 +42,7 @@ public class DefaultConsoleLauncher {
     }
 
     public DefaultConsoleLauncher(int baseSize, String player1, String player2, String player3, String player4) {
-        baseSize = baseSize;
+        DefaultConsoleLauncher.baseSize = baseSize;
         players = new String[4];
         players[0] = player1;
         players[1] = player2;
@@ -58,10 +58,6 @@ public class DefaultConsoleLauncher {
      * @param args no arguments required.
      */
     public static void main(String[] args) {
-        if (args.length < 3) {
-            System.out.println("Erreur : veuillez fournir la taille de base et au moins deux noms de joueurs.");
-            return;
-        }
 
         baseSize = Integer.parseInt(args[0]);
         players = new String[args.length-1];
@@ -69,8 +65,12 @@ public class DefaultConsoleLauncher {
             players[i - 1] = args[i];
         }
 
-        DefaultConsoleLauncher launcher = new DefaultConsoleLauncher(baseSize, players[0], players[1]);
-
+        if(players.length == 2) {
+            DefaultConsoleLauncher launcher = new DefaultConsoleLauncher(baseSize, players[0], players[1]);
+        } else if(players.length == 4) {
+            DefaultConsoleLauncher launcher = new DefaultConsoleLauncher(baseSize, players[0], players[1], players[2],
+                    players[3]);
+        }
 
         //    runTp01();
         runTp02(players);
