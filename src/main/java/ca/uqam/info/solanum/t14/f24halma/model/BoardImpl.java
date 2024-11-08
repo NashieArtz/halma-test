@@ -151,7 +151,17 @@ public class BoardImpl implements Board {
      */
     @Override
     public Set<Field> getTargetFieldsForPlayer(int playerIndex) {
-        return Set.of(); // Remplacer par la logique correcte
+        Set<Field> TargetFieldsForPlayerSet = new HashSet<>();
+        if(playerIndex == 0) {
+            TargetFieldsForPlayerSet = Set.copyOf(Arrays.asList(playerBaseFields[1]));
+        } else if (playerIndex == 1) {
+            TargetFieldsForPlayerSet = Set.copyOf(Arrays.asList(playerBaseFields[0]));
+        } else if (playerIndex == 2) {
+            TargetFieldsForPlayerSet = Set.copyOf(Arrays.asList(playerBaseFields[3]));
+        } else if (playerIndex == 3) {
+            TargetFieldsForPlayerSet = Set.copyOf(Arrays.asList(playerBaseFields[2]));
+        }
+        return Set.copyOf(TargetFieldsForPlayerSet);
     }
 
     /**
@@ -160,6 +170,7 @@ public class BoardImpl implements Board {
     @Override
     public Set<Field> getNeighbours(Field field) {
         Set<Field> neighbours = new HashSet<>();
+
         // Implémentez la logique pour récupérer les voisins ici
         return Set.copyOf(neighbours);
     }

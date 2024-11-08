@@ -16,10 +16,11 @@ import java.util.Set;
  */
 public class ModelImpl implements Model {
     private final String[] playerNames; // Noms des joueurs
-    private Map<Field, Integer> occupiedFields = Map.of(); // Champs occupés avec l'index du joueur
-    private int playerIndex;
-    private Board board;
-    private int currentPlayerIndex; // Index du joueur courant
+    protected Map<Field, Integer> occupiedFields = Map.of(); // Champs occupés avec l'index du joueur
+    protected int playerIndex;
+    private final Board board;
+    protected int currentPlayerIndex; // Index du joueur courant
+    private int currentPlayer;
 
 
     /**
@@ -45,7 +46,8 @@ public class ModelImpl implements Model {
     public ModelImpl(int baseSize, String[] players) {
         this.playerNames = players.clone();
         this.playerIndex = 0;  // Le joueur 0 commence par défaut
-        int currentPlayer = 0;
+        this.currentPlayerIndex = 0;
+        this.currentPlayer = 0;
 
         // Initialisation du plateau avec la taille de base et les noms des joueurs
         this.board = new BoardImpl(baseSize, players);  // Assigner à la variable d'instance
@@ -72,7 +74,7 @@ public class ModelImpl implements Model {
      * Method to clear the current field
      *
      * @param field as the target field to clear from any potential occupation.
-     * @throws FieldException
+     * @throws FieldException in case the specified field is not currently occupied.
      */
     @Override
     public void clearField(Field field) throws FieldException {
@@ -91,10 +93,11 @@ public class ModelImpl implements Model {
      */
     @Override
     public void setCurrentPlayer(int playerIndex) {
-        if (playerIndex < 0 || playerIndex >= playerNames.length) {
+        if (playerIndex < 0 || playerIndex > playerNames.length) {
             throw new IllegalArgumentException("Index de joueur invalide.");
+        } else {
+            currentPlayerIndex = playerIndex;
         }
-        currentPlayerIndex = playerIndex;
     }
 
     /**
@@ -115,7 +118,13 @@ public class ModelImpl implements Model {
      */
     @Override
     public boolean isClear(Field field) throws FieldException {
-        return false;
+        boolean result = board.getAllFields().contains(field);
+
+        // Vérifie si le champ est occupé
+        if (!result) {
+            throw new FieldException("Ce champ n'est pas occupé.");
+        }
+        return result;
     }
 
     /**
@@ -146,7 +155,7 @@ public class ModelImpl implements Model {
      */
     @Override
     public int getCurrentPlayer() {
-        return 0;
+        return currentPlayer;
     }
 
     /**

@@ -24,6 +24,8 @@ public class SquareModelFactory implements ModelFactory {
      * @return un nouveau modele implemente avec les donnees en parametre
      * @throws ModelInitializationException
      */
+
+
     @Override
     public ModelImpl createModel(int baseSize, String[] players) throws ModelInitializationException {
 
@@ -36,7 +38,7 @@ public class SquareModelFactory implements ModelFactory {
         }
 
         // Créer le plateau de jeu Halma
-        Set<Field> allFields = createFields(baseSize*baseSize); // plateau
+        Set<Field> allFields = createFields(baseSize*3); // plateau
         Set<Field> homeFields = createHomeFields(baseSize, players.length); // zone de chaque joueur
 
         Board board = new BoardImpl(baseSize, players);
@@ -49,6 +51,7 @@ public class SquareModelFactory implements ModelFactory {
              */
             @Override
             public Set<Field> getPlayerFields(int playerIndex) {
+
                 return Set.of();
             }
 
@@ -59,7 +62,8 @@ public class SquareModelFactory implements ModelFactory {
              */
             @Override
             public int getCurrentPlayer() {
-                return 0;
+
+                return currentPlayerIndex;
             }
 
             /**
@@ -85,7 +89,15 @@ public class SquareModelFactory implements ModelFactory {
     private Set<Field> createFields(int boardSize) {
         Set<Field> fields = new HashSet<>();
 
-        return fields; // Retourner les champs créés
+        // Créer des cases pour chaque position sur le plateau
+        for (int x = 0; x < boardSize; x++) {
+            for (int y = 0; y < boardSize; y++) {
+                // On crée chaque champ avec une position (x, y)
+                fields.add(new Field(x, y));
+            }
+        }
+
+        return fields;
     }
 
     /**
@@ -98,6 +110,7 @@ public class SquareModelFactory implements ModelFactory {
     private Set<Field> createHomeFields(int baseSize, int numberOfPlayers) {
         Set<Field> homeFields = new HashSet<>();
         // Logique pour créer les zones de départ pour le nombre de joueurs
+
         // Exemple : ajouter des objets Field représentant les zones de départ
         return homeFields; // Retourner les zones de départ créées
     }
