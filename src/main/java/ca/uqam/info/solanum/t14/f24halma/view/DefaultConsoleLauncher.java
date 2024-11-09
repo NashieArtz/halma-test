@@ -102,7 +102,7 @@ public class DefaultConsoleLauncher {
         ModelFactory modelFactory = new SquareModelFactory();
 
         // Créer le modèle et vérifier qu'il n'est pas nul
-        ModelReadOnly model = modelFactory.createModel(baseSize, playerNames);
+        ModelImpl model = (ModelImpl) modelFactory.createModel(baseSize, playerNames);
         if (model == null) {
             throw new IllegalStateException("Le modèle créé par ModelFactory est nul.");
         }

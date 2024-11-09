@@ -2,16 +2,22 @@ package ca.uqam.info.solanum.t14.f24halma.controller;
 
 import ca.uqam.info.solanum.inf2050.f24halma.controller.Controller;
 import ca.uqam.info.solanum.inf2050.f24halma.controller.ModelFactory;
+import ca.uqam.info.solanum.t14.f24halma.model.ModelImpl;
+import ca.uqam.info.solanum.inf2050.f24halma.model.Field;
+import ca.uqam.info.solanum.inf2050.f24halma.model.Model;
 import ca.uqam.info.solanum.inf2050.f24halma.controller.Move;
 import ca.uqam.info.solanum.inf2050.f24halma.model.ModelReadOnly;
-import ca.uqam.info.solanum.t14.f24halma.model.ModelImpl;
+import ca.uqam.info.solanum.inf2050.f24halma.model.FieldException;
 
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class ControllerImpl implements Controller {
-    private final ModelReadOnly model;
+    private final ModelImpl model;
 
-    public ControllerImpl(ModelReadOnly model) {
+    public ControllerImpl(ModelImpl model) {
         if (model == null) {
             throw new IllegalArgumentException("Le modèle fourni ne doit pas être nul.");
         }
@@ -45,7 +51,18 @@ public class ControllerImpl implements Controller {
      */
     @Override
     public List<Move> getPlayerMoves() {
-        return List.of();
+        int currentPlayerIndex = model.getCurrentPlayer();
+        Set<Field> playerFields = model.getPlayerFields(currentPlayerIndex);
+        List<Move> possibleMoves = new ArrayList<>();
+        for (Field field : playerFields) {
+            Set<Field> neighbours = model.getBoard().getNeighbours(field);
+            for (Field neighbour : neighbours) {
+                if (model.isClear(neighbour)) {
+                    possibleMoves.add(new Move(field, neighbour, false));
+                }
+            }
+        }
+        return possibleMoves;
     }
 
     /**
@@ -55,7 +72,12 @@ public class ControllerImpl implements Controller {
      */
     @Override
     public void performMove(Move move) {
-
+        try {
+            model.occupyField(model.getCurrentPlayer(), move.target());
+            model.clearField(move.origin());
+        } catch (FieldException e) {
+            System.out.println("Erreur: " + e.getMessage());
+        }
     }
 
     /**
@@ -65,6 +87,20 @@ public class ControllerImpl implements Controller {
      */
     @Override
     public boolean isGameOver() {
+        for (int playerIndex = 0; playerIndex < model.getPlayerNames().length; playerIndex++) {
+            Set<Field> targetFields = model.getBoard().getTargetFieldsForPlayer(playerIndex);
+            Set<Field> playerFields = model.getPlayerFields(playerIndex);
+            boolean allInTarget = true;
+            for (Field field : playerFields) {
+                if (!targetFields.contains(field)) {
+                    allInTarget = false;
+                    break;
+                }
+            }
+            if (allInTarget) {
+                return true;
+            }
+        }
         return false;
     }
 }
