@@ -170,10 +170,27 @@ public class BoardImpl implements Board {
     @Override
     public Set<Field> getNeighbours(Field field) {
         Set<Field> neighbours = new HashSet<>();
+        int x = field.x();
+        int y = field.y();
 
-        // Implémentez la logique pour récupérer les voisins ici
+        // Directions : haut, bas, gauche, droite, et les quatre diagonales
+        int[][] directions = {
+                {-1, 0}, {1, 0}, {0, -1}, {0, 1}, // Haut, bas, gauche, droite
+                {-1, -1}, {-1, 1}, {1, -1}, {1, 1} // Diagonales
+        };
+
+        for (int[] dir : directions) {
+            int newX = x + dir[0];
+            int newY = y + dir[1];
+
+            // Vérification des limites du plateau
+            if (newX >= 0 && newX < fields.length && newY >= 0 && newY < fields[0].length) {
+                neighbours.add(fields[newX][newY]);
+            }
+        }
         return Set.copyOf(neighbours);
     }
+
 
     /**
      * Methode heritee
