@@ -108,7 +108,7 @@ public class DefaultConsoleLauncher {
     }
 
     // Create a model (read only access) for the provided game parameters
-    ModelFactory modelFactory = new SquareModelFactory(); //
+    ModelFactory modelFactory = new SquareModelFactory(); // TODO: Create this class and import it.
     ModelReadOnly model = modelFactory.createModel(baseSize, playerNames);
 
     //Visualize initial model state
