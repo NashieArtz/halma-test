@@ -13,7 +13,7 @@
         <maven.compiler.release>21</maven.compiler.release>
     </properties>
 
-    <!-- Licenses -->
+    <!-- legal -->
     <licenses>
         <license>
             <name>MIT License</name>
@@ -23,46 +23,46 @@
     </licenses>
 
     <dependencies>
-        <!-- JUnit 5 (JUnit Jupiter) -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.9.2</version>
+            <version>5.6.2</version>
             <scope>test</scope>
         </dependency>
 
-        <!-- JUnit 4 -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.13.2</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- JUnit Vintage Engine to run JUnit 4 tests with JUnit 5 -->
-        <dependency>
-            <groupId>org.junit.vintage</groupId>
-            <artifactId>junit-vintage-engine</artifactId>
-            <version>5.9.2</version>
+            <version>4.11</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
 
     <build>
+        <!-- Override default name of generated jars -->
         <finalName>Halma</finalName>
 
         <plugins>
-            <!-- Plugin to specify main class for execution -->
+
+            <!-- Specify main class for exec goal -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.6.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
+                    <!-- Replace "tXX" by your team number, e.g. for team 01 => "t01" -->
                     <mainClass>ca.uqam.info.solanum.t14.f24halma.view.DefaultConsoleLauncher</mainClass>
                 </configuration>
             </plugin>
 
-            <!-- Plugin to specify main class for JAR manifest -->
+            <!-- specify main class for JAR manifest-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -70,19 +70,22 @@
                 <configuration>
                     <archive>
                         <manifest>
+                            <!-- Replace "tXX" by your team number, e.g. for team 01 => "t01" -->
                             <mainClass>ca.uqam.info.solanum.t14.f24halma.view.DefaultConsoleLauncher</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
             </plugin>
 
-            <!-- Plugin to generate Javadoc -->
+            <!-- Plugin to ensure all functions are commented and generate javadoc -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.4.1</version>
                 <configuration>
-                    <reportOutputDirectory>${project.reporting.outputDirectory}/docs</reportOutputDirectory>
+                    <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
+                    <reportOutputDirectory>${project.reporting.outputDirectory}/docs
+                    </reportOutputDirectory>
                     <failOnWarnings>true</failOnWarnings>
                     <quiet>true</quiet>
                 </configuration>
@@ -95,28 +98,29 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <!-- Plugin to enforce Checkstyle -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.2.0</version>
-                <configuration>
-                    <configLocation>google_checks.xml</configLocation>
-                    <consoleOutput>true</consoleOutput>
-                    <violationSeverity>warning</violationSeverity>
-                    <failOnViolation>true</failOnViolation>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>validate</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+<!-- Plugin to refuse build in case of checkstyle violations-->
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-checkstyle-plugin</artifactId>
+    <version>3.2.0</version>
+    <configuration>
+        <configLocation>google_checks.xml</configLocation>
+        <consoleOutput>true</consoleOutput>
+        <violationSeverity>warning</violationSeverity>
+        <failOnViolation>true</failOnViolation>
+        <failsOnError>true</failsOnError>
+        <linkXRef>false</linkXRef>
+    </configuration>
+    <executions>
+        <execution>
+            <id>validate</id>
+            <phase>validate</phase>
+            <goals>
+                <goal>check</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
         </plugins>
     </build>
 </project>
