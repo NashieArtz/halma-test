@@ -226,38 +226,68 @@
     </build>
 
     <profiles>
-        <!-- Profil MadMax -->
-        <profile>
-            <id>madmax</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <version>3.1.0</version>
-                        <configuration>
-                            <mainClass>ca.uqam.info.solanum.t14.f24halma.view.MadMaxLauncher</mainClass>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
+    <!-- Profil par défaut : MadMax -->
+    <profile>
+        <id>madmax</id>
+        <activation>
+            <activeByDefault>true</activeByDefault>
+        </activation>
+        <properties>
+            <ai.class>ca.uqam.info.solanum.t14.f24halma.ai.MadMaxMoveSelector</ai.class>
+        </properties>
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>3.0.0</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>java</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <mainClass>ca.uqam.info.solanum.t14.f24halma.view.DefaultConsoleLauncher</mainClass>
+                        <arguments>
+                            <argument>${ai.class}</argument>
+                        </arguments>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </build>
+    </profile>
 
-        <!-- Profil Keksli -->
-        <profile>
-            <id>keksli</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <version>3.1.0</version>
-                        <configuration>
-                            <mainClass>ca.uqam.info.solanum.t14.f24halma.view.KeksliLauncher</mainClass>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
+    <!-- Profil Keksli -->
+    <profile>
+        <id>keksli</id>
+        <properties>
+            <ai.class>ca.uqam.info.solanum.t14.f24halma.ai.KeksliMoveSelector</ai.class>
+        </properties>
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>3.0.0</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>java</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <mainClass>ca.uqam.info.solanum.t14.f24halma.view.DefaultConsoleLauncher</mainClass>
+                        <arguments>
+                            <argument>${ai.class}</argument>
+                        </arguments>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </build>
+    </profile>
+</profiles>
+
 </project>
