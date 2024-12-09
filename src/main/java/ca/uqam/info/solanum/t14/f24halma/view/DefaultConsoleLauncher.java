@@ -145,7 +145,7 @@ public class DefaultConsoleLauncher {
     while (!controller.isGameOver()) {
       visualizer.clearScreen();
       System.out.println(visualizer.stringifyModel(controller.getModel()));
-      }
+    }
 
     System.out.println("GAME OVER !");
   }
@@ -158,7 +158,8 @@ public class DefaultConsoleLauncher {
 
     //Vérifie le nombre de joueurs
     if (!isValidPlayerCount(playerNames.length)) {
-      throw new IllegalArgumentException("Nombre de joueurs invalide. Il doit y avoir 2 ou 4 joueurs.");
+      throw new IllegalArgumentException("Nombre de joueurs invalide. 
+      Il doit y avoir 2 ou 4 joueurs.");
     }
 
     try {
