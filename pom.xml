@@ -8,6 +8,13 @@
     <name>Halma</name>
     <url>http://maven.apache.org</url>
 
+    <repositories>
+        <repository>
+            <id>inf2050-repo</id>
+            <url>https://max.pages.info.uqam.ca/inf2050repo/</url>
+        </repository>
+    </repositories>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>21</maven.compiler.release>
@@ -23,6 +30,22 @@
     </licenses>
 
     <dependencies>
+        
+        <!-- Dépendance pour les interfaces -->
+        <dependency>
+            <groupId>ca.uqam.info.solanum</groupId>
+            <artifactId>halmainterfaces</artifactId>
+            <version>f24-1.0</version>
+        </dependency>
+
+        <!-- Dépendance pour les tests (scope test) -->
+        <dependency>
+            <groupId>ca.uqam.info.solanum</groupId>
+            <artifactId>halmatests</artifactId>
+            <version>f24-1.0</version>
+            <scope>test</scope>
+        </dependency>
+    
 
         <dependency>
             <groupId>junit</groupId>
