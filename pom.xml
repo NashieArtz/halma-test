@@ -127,15 +127,12 @@
             </plugin>
 
             <!-- Plugin to ensure all functions are commented and generate javadoc -->
-            <plugin>
+            
+    
+        <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.4.1</version>
-            <configuration>
-                
-                <quiet>true</quiet>
-                <reportOutputDirectory>${project.reporting.outputDirectory}/apidocs</reportOutputDirectory>
-            </configuration>
+            <version>3.3.1</version>
             <executions>
                 <execution>
                     <id>generate-javadocs</id>
@@ -146,6 +143,8 @@
                 </execution>
             </executions>
         </plugin>
+    
+
 
 <!-- Plugin to refuse build in case of checkstyle violations-->
 <plugin>
