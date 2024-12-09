@@ -22,13 +22,9 @@ mvn exec:java "-Dexec.args=3 Max Quentin Ryan Hafedh"
 
 Exécution à partir du fichier JAR
 
-java -jar target/halma-game-1.0-SNAPSHOT.jar <taille_du_plateau> <nom_joueur_1> <nom_joueur_2>
-
 Exemples :
 
-java -jar target/halma-game-1.0-SNAPSHOT.jar 4 Max Quentin
-
-java -jar target/halma-game-1.0-SNAPSHOT.jar 3 Max Quentin Ryan Hafedh
+java -jar target/*jar 4 Max Quentin
 
 Interface en ligne de commande
 
