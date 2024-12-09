@@ -59,12 +59,16 @@ pages:
   stage: deploy
   image: maven:3.9.8-amazoncorretto-21
   script:
-    - echo "Génération de la documentation API..."
-    - mvn javadoc:javadoc
-    - mkdir -p public
-    - cp -r docs/javadoc/* public/
+    - "mvn clean package -Dcheckstyle.skip=true -DskipTests -B"
+    - "mv target/apidocs public"
   artifacts:
     paths:
       - public
-  only:
-    - main
+  
+
+maven-verify:
+  stage: verify
+  script:
+    - "mvn clean verify -Dcheckstyle.skip=true -Dmaven.javadoc.skip=true -B"
+    - "cat target/site/jacoco/index.html | grep -o 'Total[^%]*%' | sed 's/<.*>/ /; s/Total/Jacoco Coverage Total:/'"
+  coverage: '/Total.*?([0-9]{1,3})%/'
