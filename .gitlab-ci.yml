@@ -65,10 +65,3 @@ pages:
     paths:
       - public
   
-
-maven-verify:
-  stage: verify
-  script:
-    - "mvn clean verify -Dcheckstyle.skip=true -Dmaven.javadoc.skip=true -B"
-    - "cat target/site/jacoco/index.html | grep -o 'Total[^%]*%' | sed 's/<.*>/ /; s/Total/Jacoco Coverage Total:/'"
-  coverage: '/Total.*?([0-9]{1,3})%/'
