@@ -95,8 +95,8 @@ public class DefaultConsoleLauncher {
     }
 
     //runTp01();
-    runTp02(players);
-    //runTp03();
+    //runTp02(players);
+    runTp03();
   }
 
 
