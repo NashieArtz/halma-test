@@ -43,7 +43,7 @@
         <dependency>
             <groupId>ca.uqam.info.solanum</groupId>
             <artifactId>halmatests</artifactId>
-            <version>f24-1.0</version>
+            <version>f24-1.1</version>
             <scope>test</scope>
         </dependency>
 
