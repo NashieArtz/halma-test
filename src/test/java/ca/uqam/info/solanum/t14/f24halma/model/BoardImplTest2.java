@@ -4,7 +4,7 @@ import ca.uqam.info.solanum.inf2050.f24halma.model.Field;
 import java.util.Set;
 import junit.framework.TestCase;
 
-public class BoardImplTest2 extends TestCase {
+public class BoardImpl2Test extends TestCase {
 
   private BoardImpl board;
   private String[] players;
