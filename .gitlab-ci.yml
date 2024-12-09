@@ -60,7 +60,7 @@ pages:
   image: maven:3.9.8-amazoncorretto-21
   script:
     - echo "Génération de la documentation API..."
-    - mvn clean javadoc:javadoc
+    - mvn javadoc:javadoc
     - mkdir -p public
     - cp -r docs/javadoc/* public/
   artifacts:
