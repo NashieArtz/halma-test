@@ -196,13 +196,14 @@ public class DefaultConsoleLauncher {
     }
   }
 
-  private static int parseBaseSize(String baseSizeArg) {
+  private static int parseBaseSize(String input) {
     try {
-      return Integer.parseInt(baseSizeArg);
+        return Integer.parseInt(input);
     } catch (NumberFormatException e) {
-      throw new IllegalArgumentException("La taille de base doit être un entier valide.");
+        throw new IllegalArgumentException("La taille de base doit être un entier valide.");
     }
-  }
+}
+
 
   private static boolean isValidPlayerCount(int playerCount) {
     return playerCount == 2 || playerCount == 4;
