@@ -31,7 +31,7 @@ cache:
 # Étape 1 : Compilation du projet
 build:
   stage: build
-  image: maven:3.8.5-openjdk-17
+  image: maven:3.9.8-amazoncorretto-21
   script:
     - echo "Compilation du projet..."
     - mvn $MAVEN_CLI_OPTS clean package
@@ -43,7 +43,7 @@ build:
 # Étape 2 : Exécution des tests
 test:
   stage: test
-  image: maven:3.8.5-openjdk-17
+  image: maven:3.9.8-amazoncorretto-21
   script:
     - echo "Exécution des tests unitaires..."
     - mvn test
@@ -57,7 +57,7 @@ test:
 # Étape 3 : Génération et déploiement de la documentation API
 pages:
   stage: deploy
-  image: maven:3.8.5-openjdk-17
+  image: maven:3.9.8-amazoncorretto-21
   script:
     - echo "Génération de la documentation API..."
     - mvn javadoc:javadoc
