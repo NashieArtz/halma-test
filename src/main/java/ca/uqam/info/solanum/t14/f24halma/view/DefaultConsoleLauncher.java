@@ -4,11 +4,12 @@ package ca.uqam.info.solanum.t14.f24halma.view;
 import ca.uqam.info.solanum.inf2050.f24halma.controller.Controller;
 import ca.uqam.info.solanum.inf2050.f24halma.controller.ModelFactory;
 import ca.uqam.info.solanum.inf2050.f24halma.controller.Move;
-import ca.uqam.info.solanum.inf2050.f24halma.model.Board;
+import ca.uqam.info.solanum.inf2050.f24halma.model.ModelInitializationException;
 import ca.uqam.info.solanum.inf2050.f24halma.model.ModelReadOnly;
 import ca.uqam.info.solanum.inf2050.f24halma.view.InteractiveMoveSelector;
 import ca.uqam.info.solanum.inf2050.f24halma.view.MoveSelector;
 import ca.uqam.info.solanum.inf2050.f24halma.view.TextualVisualizer;
+import ca.uqam.info.solanum.t14.f24halma.ai.MadMaxMoveSelector;
 import ca.uqam.info.solanum.t14.f24halma.controller.ControllerImpl;
 import ca.uqam.info.solanum.t14.f24halma.controller.SquareModelFactory;
 import ca.uqam.info.solanum.t14.f24halma.model.BoardImpl;
@@ -78,6 +79,10 @@ public class DefaultConsoleLauncher {
    * @param args no arguments required.
    */
   public static void main(String[] args) {
+    if (args.length < 3) {
+      System.out.println("Commande: \"baseSize\" \"player1\" \"player2\" \"player3\" \"player4\"");
+      return;
+    }
 
     baseSize = Integer.parseInt(args[0]);
     players = new String[args.length - 1];
@@ -96,16 +101,17 @@ public class DefaultConsoleLauncher {
 
     //runTp01();
     //runTp02(players);
-    runTp03();
+    try {
+      runTp03(args);
+    } catch (Exception e) {
+      System.out.println("Erreur : " + e.getMessage());
+    }
   }
 
 
+
   private static void runTp01() {
-    String[] playerNames = new String[players.length];
-    // Set default parameters
-    for (int i = 0; i < players.length; i++) {
-      playerNames[i] = players[i];
-    }
+    String[] playerNames = {"Joueur1", "Joueur2"};
 
     // Create a model (read only access) for the provided game parameters
     ModelFactory modelFactory = new SquareModelFactory(); // TODO: Create this class and import it.
@@ -117,14 +123,13 @@ public class DefaultConsoleLauncher {
     System.out.println(visualizer.stringifyModel(model));
   }
 
-  private static void runTp02(String[] players) {
+  private static void runTp02(String[] playersNames) {
 
-    String[] playerNames = Arrays.copyOfRange(players, 0, players.length);
-    System.out.println(Arrays.toString(playerNames));
+    int baseSize = 2;
     ModelFactory modelFactory = new SquareModelFactory();
 
     //Créer le modèle et vérifier qu'il n'est pas nul
-    ModelImpl model = (ModelImpl) modelFactory.createModel(baseSize, playerNames);
+    ModelImpl model = (ModelImpl) modelFactory.createModel(baseSize, playersNames);
     if (model == null) {
       throw new IllegalStateException("Le modèle créé par ModelFactory est nul.");
     }
@@ -138,17 +143,81 @@ public class DefaultConsoleLauncher {
 
     //Reste du code pour exécuter le jeu
     while (!controller.isGameOver()) {
-      printAndRequestAndPerformAction(controller,
-          visualizer, playerNamesToMoveSelectors(playerNames));
-    }
+      visualizer.clearScreen();
+      System.out.println(visualizer.stringifyModel(controller.getModel()));
+      }
 
-    System.out.println(visualizer.stringifyModel(controller.getModel()));
-    System.out.println("GAME OVER!");
+    System.out.println("GAME OVER !");
   }
 
 
-  private static void runTp03() {
-  //Will be released with TP02 instructions.
+  private static void runTp03(String[] args) {
+    //Analyse des paramètres de la ligne de commande
+    int baseSize = parseBaseSize(args[0]);
+    String[] playerNames = Arrays.copyOfRange(args, 1, args.length);
+
+    //Vérifie le nombre de joueurs
+    if (!isValidPlayerCount(playerNames.length)) {
+      throw new IllegalArgumentException("Nombre de joueurs invalide. Il doit y avoir 2 ou 4 joueurs.");
+    }
+
+    try {
+      //Initialisation pour modèles, sélecteurs de mouvements,le contrôleur et le visualiseur
+      ModelFactory modelFactory = new SquareModelFactory();
+      ModelImpl model = (ModelImpl) modelFactory.createModel(baseSize, playerNames);
+      MoveSelector[] moveSelectors = setupMoveSelectors(playerNames);
+      Controller controller = new ControllerImpl(model);
+      TextualVisualizer visualizer = new TextualVisualizer(true);
+
+      //Exécution du jeu
+      while (!controller.isGameOver()) {
+        ModelReadOnly modelReadOnly = controller.getModel();
+        visualizer.clearScreen();
+        System.out.println(visualizer.stringifyModel(modelReadOnly));
+
+        int currentPlayerIndex = modelReadOnly.getCurrentPlayer();
+        List<Move> availableMoves = controller.getPlayerMoves();
+
+        if (availableMoves.isEmpty()) {
+          System.out.println("Aucun mouvement disponible pour le joueur " + currentPlayerIndex);
+          break;
+        }
+
+        Move selectedMove = moveSelectors[currentPlayerIndex].selectMove(availableMoves);
+        controller.performMove(selectedMove);
+      }
+
+      System.out.println("GAME OVER !");
+      System.out.println(visualizer.stringifyModel(controller.getModel()));
+
+    } catch (ModelInitializationException e) {
+      System.out.println("Erreur lors de l'initialisation du jeu : " + e.getMessage());
+    }
+  }
+
+  private static int parseBaseSize(String baseSizeArg) {
+    try {
+      return Integer.parseInt(baseSizeArg);
+    } catch (NumberFormatException e) {
+      throw new IllegalArgumentException("La taille de base doit être un entier valide.");
+    }
+  }
+
+  private static boolean isValidPlayerCount(int playerCount) {
+    return playerCount == 2 || playerCount == 4;
+  }
+
+  private static MoveSelector[] setupMoveSelectors(String[] playerNames) {
+    MoveSelector[] moveSelectors = new MoveSelector[playerNames.length];
+
+    for (int i = 0; i < playerNames.length; i++) {
+      if ("AI".equalsIgnoreCase(playerNames[i])) {
+        moveSelectors[i] = new MadMaxMoveSelector();
+      } else {
+        moveSelectors[i] = new InteractiveMoveSelector();
+      }
+    }
+    return moveSelectors;
   }
 
   private static MoveSelector[] playerNamesToMoveSelectors(String[] playerNames) {
