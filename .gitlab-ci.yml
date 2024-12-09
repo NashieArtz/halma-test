@@ -18,7 +18,7 @@ build:
   artifacts:
     paths:
       - target/*.jar
-    expire_in: 1 week
+
 
 # Étape 2 : Exécution des tests unitaires
 test:
@@ -32,7 +32,7 @@ test:
     when: always
     paths:
       - target/site/jacoco
-    expire_in: 1 week
+
 
 # Étape 3 : Exécution des tests d'intégration
 verify:
@@ -44,9 +44,12 @@ verify:
   allow_failure: false
   artifacts:
     when: always
+    reports:
+      junit:
+        - target/surefire-reports/TEST-*.xml
     paths:
       - target/site/jacoco
-    expire_in: 1 week
+
 
 # Étape 4 : Génération et déploiement de la documentation API
 pages:
@@ -60,4 +63,4 @@ pages:
   artifacts:
     paths:
       - public
-    expire_in: 1 week
+
