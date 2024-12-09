@@ -21,8 +21,6 @@ stages:
   - test
   - deploy
 
-variables:
-  MAVEN_CLI_OPTS: "-B -DskipTests"
 
 cache:
   paths:
