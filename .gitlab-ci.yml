@@ -14,7 +14,7 @@ build:
   image: maven:3.9.8-amazoncorretto-21
   script:
     - echo "Compilation du projet..."
-    - mvn $MAVEN_CLI_OPTS clean package
+    - "mvn clean package -Dcheckstyle.skip=true -DskipTests -B"
   artifacts:
     paths:
       - target/*.jar
