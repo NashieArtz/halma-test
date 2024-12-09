@@ -57,8 +57,10 @@ pages:
   stage: deploy
   image: maven:3.9.8-amazoncorretto-21
   script:
-    - "mvn clean package -Dcheckstyle.skip=true -DskipTests -B"
-    - "mv target/apidocs public"
+    - echo "Génération de la documentation Javadoc..."
+    - mvn javadoc:javadoc
+    - mkdir -p public
+    - cp -r target/site/apidocs/* public/
   artifacts:
     paths:
       - public
