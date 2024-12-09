@@ -88,7 +88,7 @@
             <configuration>
                 <failOnWarnings>false</failOnWarnings>
                 <quiet>true</quiet>
-                <reportOutputDirectory>${project.reporting.outputDirectory}/apidocs</reportOutputDirectory>
+                <outputDirectory>${project.basedir}/docs/javadoc</outputDirectory>
             </configuration>
             <executions>
                 <execution>
