@@ -36,7 +36,7 @@
         <dependency>
             <groupId>ca.uqam.info.solanum</groupId>
             <artifactId>halmainterfaces</artifactId>
-            <version>f24-1.0</version>
+            <version>f24-1.1</version>
         </dependency>
 
         <!-- Dépendance pour les tests (scope test) -->
