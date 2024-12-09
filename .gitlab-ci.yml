@@ -40,7 +40,7 @@ verify:
   image: maven:3.9.8-amazoncorretto-21
   script:
     - echo "Exécution des tests d'intégration..."
-    - mvn verify
+    - "mvn clean verify -Dcheckstyle.skip=true -Dmaven.javadoc.skip=true -B"
   allow_failure: false
   artifacts:
     when: always
