@@ -81,14 +81,14 @@ install:
     - mvn install
 
 # Étape 7 : Déploiement vers un dépôt distant
-deploy:
+pages:
   stage: deploy
   image: maven:3.9.8-amazoncorretto-21
   script:
-    - echo "Déploiement de l'artefact vers le dépôt distant..."
-    - mvn deploy -DskipTests
-  only:
-    - main
+    - echo "Génération de la documentation Javadoc..."
+    - mvn javadoc:javadoc
+    - mkdir -p public
+    - cp -r target/site/apidocs/* public/
   artifacts:
     paths:
-      - target/*.jar
+      - public
