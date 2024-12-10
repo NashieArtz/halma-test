@@ -5,31 +5,33 @@ import ca.uqam.info.solanum.inf2050.f24halma.controller.ModelFactory;
 import ca.uqam.info.solanum.inf2050.f24halma.controller.Move;
 import ca.uqam.info.solanum.inf2050.f24halma.model.Field;
 import ca.uqam.info.solanum.inf2050.f24halma.model.FieldException;
-import ca.uqam.info.solanum.inf2050.f24halma.model.Model;
 import ca.uqam.info.solanum.inf2050.f24halma.model.ModelReadOnly;
 import ca.uqam.info.solanum.t14.f24halma.model.ModelImpl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
 /**
- * Implémentation du contrôleur pour le modèle de jeu.
- *
- * <p>Cette classe gère les interactions entre l'interface utilisateur et le modèle, et permet de
- * contrôler l'état du jeu en passant par le modèle.</p>
+ * Implémentation du contrôleur pour le jeu Halma.
+ * <p>
+ * Cette classe gère les interactions entre l'interface utilisateur et le modèle.
+ * Elle permet de consulter l'état actuel du modèle et de modifier cet état
+ * via des mouvements de joueurs.
+ * </p>
  */
-
 public class ControllerImpl implements Controller {
-  private final ModelImpl model;
-  /**
-  * Constructeur de la classe `ControllerImpl`.
-  *
-  * <p>Initialise le contrôleur avec une instance de modèle. Si le modèle fourni est nul,
-  * une exception est levée.</p>
-  *
-  * @param model le modèle du jeu utilisé par le contrôleur pour gérer l'état du jeu.
-  * @throws IllegalArgumentException si le modèle fourni est nul.
-  */
 
+  /**
+   * Instance du modèle utilisée par le contrôleur pour gérer l'état du jeu.
+   */
+  private final ModelImpl model;
+
+  /**
+   * Constructeur qui initialise le contrôleur avec un modèle existant.
+   *
+   * @param model le modèle à utiliser pour gérer l'état du jeu.
+   * @throws IllegalArgumentException si le modèle fourni est nul.
+   */
   public ControllerImpl(ModelImpl model) {
     if (model == null) {
       throw new IllegalArgumentException("Le modèle fourni ne doit pas être nul.");
@@ -38,35 +40,56 @@ public class ControllerImpl implements Controller {
   }
 
   /**
-   * Read only access to current version of model. Can be used e.g. by UI, to visualize state.
-   * Cannot be used to directly modify state. All state modification must pass through other
-   * controller methods.
+   * Constructeur qui initialise le contrôleur en utilisant une fabrique de modèles.
    *
-   * @return the immutable model.
+   * @param modelFactory la fabrique de modèles utilisée pour créer un modèle.
+   * @param baseSize     la taille de base du plateau (ex. 4 pour un plateau 16x16).
+   * @param playerNames  les noms des joueurs participant au jeu.
+   * @throws IllegalArgumentException si la fabrique ou les paramètres sont invalides.
+   */
+  public ControllerImpl(ModelFactory modelFactory, int baseSize, String[] playerNames) {
+    if (modelFactory == null) {
+      throw new IllegalArgumentException("La fabrique de modèle ne peut pas être nulle.");
+    }
+    if (baseSize <= 0) {
+      throw new IllegalArgumentException("La taille de base doit être positive.");
+    }
+    if (playerNames == null || playerNames.length < 2) {
+      throw new IllegalArgumentException("Au moins deux joueurs doivent être fournis.");
+    }
+
+    this.model = (ModelImpl) modelFactory.createModel(baseSize, playerNames);
+  }
+
+  /**
+   * Renvoie une version en lecture seule du modèle.
+   * <p>
+   * Cette méthode permet, par exemple, à l'interface utilisateur de visualiser
+   * l'état du jeu sans modifier directement le modèle.
+   * </p>
+   *
+   * @return une vue immuable du modèle actuel.
    */
   @Override
   public ModelReadOnly getModel() {
     return this.model;
   }
 
-  // Méthodes de la classe
-
-
   /**
-   * Generator for all valid actions of the current player.Each action object represents an atomic
-   * move, that is, further actions by the same player may be possible. If the previous move was a
-   * jump (figure places across another figure), only moves for the same figure can be performed,
-   * the inverse jum (returning to jump origin) is not contained in the result set.If at least one
-   * consecutive jump is possible, a null move (with original equal to target)must be contained in
-   * the result list.
+   * Génère une liste de mouvements valides pour le joueur actuel.
+   * <p>
+   * Cette méthode prend en compte les règles du jeu pour déterminer quels
+   * mouvements sont possibles depuis les champs occupés par le joueur actuel.
+   * </p>
    *
-   * @return list of action objects, each representing an atomic figure move.
+   * @return une liste de mouvements valides.
    */
   @Override
   public List<Move> getPlayerMoves() {
     int currentPlayerIndex = model.getCurrentPlayer();
     Set<Field> playerFields = model.getPlayerFields(currentPlayerIndex);
     List<Move> possibleMoves = new ArrayList<>();
+
     for (Field field : playerFields) {
       Set<Field> neighbours = model.getBoard().getNeighbours(field);
       for (Field neighbour : neighbours) {
@@ -75,13 +98,19 @@ public class ControllerImpl implements Controller {
         }
       }
     }
+
     return possibleMoves;
   }
 
   /**
-   * Modifies model state according to the action index of a given player's actions.
+   * Exécute un mouvement spécifié par le joueur actuel.
+   * <p>
+   * Cette méthode modifie l'état du modèle en déplaçant une pièce d'un champ
+   * d'origine vers un champ cible.
+   * </p>
    *
-   * @param move as the action to perform,i.e. the details of how the model state must be changed.
+   * @param move le mouvement à effectuer.
+   * @throws IllegalStateException si le mouvement est invalide ou impossible à effectuer.
    */
   @Override
   public void performMove(Move move) {
@@ -89,28 +118,26 @@ public class ControllerImpl implements Controller {
       model.occupyField(model.getCurrentPlayer(), move.target());
       model.clearField(move.origin());
     } catch (FieldException e) {
-      System.out.println("Erreur: " + e.getMessage());
+      throw new IllegalStateException("Impossible d'effectuer le mouvement : " + e.getMessage(), e);
     }
   }
 
   /**
-   * Tells whether the game is over.
+   * Indique si la partie est terminée.
+   * <p>
+   * Une partie est terminée lorsqu'un joueur a déplacé toutes ses pièces
+   * sur les champs cibles correspondants.
+   * </p>
    *
-   * @return true when at least one player has all their figures on their target fields.
+   * @return {@code true} si la partie est terminée, {@code false} sinon.
    */
   @Override
   public boolean isGameOver() {
     for (int playerIndex = 0; playerIndex < model.getPlayerNames().length; playerIndex++) {
       Set<Field> targetFields = model.getBoard().getTargetFieldsForPlayer(playerIndex);
       Set<Field> playerFields = model.getPlayerFields(playerIndex);
-      boolean allInTarget = true;
-      for (Field field : playerFields) {
-        if (!targetFields.contains(field)) {
-          allInTarget = false;
-          break;
-        }
-      }
-      if (allInTarget) {
+
+      if (targetFields.containsAll(playerFields)) {
         return true;
       }
     }
