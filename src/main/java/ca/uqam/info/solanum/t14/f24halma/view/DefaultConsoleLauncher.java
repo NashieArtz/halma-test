@@ -147,7 +147,7 @@ public class DefaultConsoleLauncher {
   }
 
 
-  private static void runTp03(String[] args) {
+  static void runTp03(String[] args) {
 
     // Parse runtime parameters
     int baseSize = Integer.parseInt(args[0]);
