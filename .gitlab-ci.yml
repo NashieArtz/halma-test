@@ -1,66 +1,94 @@
 stages:
-  - build
+  - validate
+  - compile
   - test
+  - package
   - verify
+  - install
   - deploy
 
 cache:
   paths:
     - .m2/repository
 
-# Étape 1 : Compilation du projet
-build:
-  stage: build
+# Étape 1 : Validation de la structure du projet
+validate:
+  stage: validate
   image: maven:3.9.8-amazoncorretto-21
   script:
-    - echo "Compilation du projet..."
-    - mvn $MAVEN_CLI_OPTS clean package
+    - echo "Validation de la structure du projet..."
+    - mvn validate
+
+# Étape 2 : Compilation du code source
+compile:
+  stage: compile
+  image: maven:3.9.8-amazoncorretto-21
+  script:
+    - echo "Compilation du code source..."
+    - mvn compile
   artifacts:
     paths:
-      - target/*.jar
+      - target/classes
 
-
-# Étape 2 : Exécution des tests unitaires
+# Étape 3 : Exécution des tests unitaires
 test:
   stage: test
   image: maven:3.9.8-amazoncorretto-21
   script:
     - echo "Exécution des tests unitaires..."
     - mvn test
-  allow_failure: false
-  artifacts:
-    when: always
-    paths:
-      - target/site/jacoco
-
-
-# Étape 3 : Exécution des tests d'intégration
-verify:
-  stage: verify
-  image: maven:3.9.8-amazoncorretto-21
-  script:
-    - echo "Exécution des tests d'intégration..."
-    - "mvn clean verify -Dcheckstyle.skip=true -Dmaven.javadoc.skip=true -B"
-  allow_failure: false
   artifacts:
     when: always
     reports:
       junit:
         - target/surefire-reports/TEST-*.xml
     paths:
-      - target/site/jacoco
+      - target/surefire-reports/
 
+# Étape 4 : Emballage du projet (JAR, WAR, etc.)
+package:
+  stage: package
+  image: maven:3.9.8-amazoncorretto-21
+  script:
+    - echo "Emballage des fichiers compilés..."
+    - mvn package
+  artifacts:
+    paths:
+      - target/*.jar
 
-# Étape 4 : Génération et déploiement de la documentation API
-pages:
+# Étape 5 : Tests d'intégration
+verify:
+  stage: verify
+  image: maven:3.9.8-amazoncorretto-21
+  script:
+    - echo "Exécution des tests d'intégration..."
+    - mvn verify
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - target/surefire-reports/TEST-*.xml
+    paths:
+      - target/surefire-reports/
+      - target/failsafe-reports/
+
+# Étape 6 : Installation dans le dépôt local (.m2)
+install:
+  stage: install
+  image: maven:3.9.8-amazoncorretto-21
+  script:
+    - echo "Installation de l'artefact dans le dépôt local..."
+    - mvn install
+
+# Étape 7 : Déploiement vers un dépôt distant
+deploy:
   stage: deploy
   image: maven:3.9.8-amazoncorretto-21
   script:
-    - echo "Génération de la documentation Javadoc..."
-    - mvn javadoc:javadoc
-    - mkdir -p public
-    - cp -r target/site/apidocs/* public/
+    - echo "Déploiement de l'artefact vers le dépôt distant..."
+    - mvn deploy -DskipTests
+  only:
+    - main
   artifacts:
     paths:
-      - public
-
+      - target/*.jar
