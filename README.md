@@ -1,109 +1,163 @@
-# Instructions de Compilation et d'Exécution
 
-## Instructions de Compilation
+# **Guide d'Utilisation et Documentation**
 
-Pour compiler le projet et produire le fichier JAR, exécutez les commandes suivantes dans le répertoire racine du projet :
+## **Étape 1 : Cloner le Projet depuis Git**
+
+Pour obtenir le code source du projet, exécutez la commande suivante dans votre terminal :
+
+```bash
+git clone <URL_DU_DEPOT>
+```
+
+#### **Exemple :**
+```bash
+git clone https://gitlab.info.uqam.ca/inf2050/2024-hiver/halma14.git
+```
+
+Accédez ensuite au répertoire du projet cloné :
+
+```bash
+cd halma14
+```
+
+---
+
+## **Exigences Système**
+
+### **Prérequis :**
+1. **Java Development Kit (JDK)** :
+   - Version requise : **Java 17** ou supérieure.
+   - Téléchargez-le ici : [Oracle JDK](https://www.oracle.com/java/technologies/javase-downloads.html) ou [OpenJDK](https://openjdk.org/).
+
+2. **Apache Maven** :
+   - Version requise : **3.8.0** ou supérieure.
+   - Téléchargez-le ici : [Apache Maven](https://maven.apache.org/download.cgi).
+
+3. **Système d'exploitation** :
+   - Compatible avec Windows, macOS et Linux.
+
+4. **Accès réseau** (facultatif pour les dépendances Maven) :
+   - Assurez-vous que Maven peut télécharger les dépendances nécessaires depuis les dépôts en ligne.
+
+---
+
+## **Instructions de Compilation**
+
+Pour compiler le projet et produire un fichier JAR exécutable :
+
+1. Assurez-vous d'avoir installé **Java** et **Maven**.
+2. Exécutez la commande suivante dans le répertoire racine du projet :
 
 ```bash
 mvn clean package
 ```
 
-Cette commande générera un fichier JAR dans le dossier `target`.
+Cette commande génère un fichier JAR dans le dossier `target`.
 
-## Instructions d'Exécution
+---
 
-Vous pouvez exécuter le jeu directement avec Maven ou en utilisant le fichier JAR généré.
+## **Exécution du Logiciel**
 
-### Exécution avec Maven
+### **1. Exécution directe avec Maven**
+
+Utilisez la commande suivante pour exécuter le jeu sans créer explicitement un fichier JAR :
 
 ```bash
 mvn exec:java "-Dexec.args=<taille_du_plateau> <nom_joueur_1> <nom_joueur_2>"
 ```
 
-#### Exemples :
+#### **Exemples :**
 ```bash
 mvn exec:java "-Dexec.args=4 Max Quentin"
-mvn exec:java "-Dexec.args=3 Max Quentin Ryan Hafedh"
+mvn exec:java "-Dexec.args=4 AI Quentin"
 ```
 
-### Exécution à partir du fichier JAR
+### **2. Exécution à partir d'un fichier JAR**
 
-#### Exemples :
+Après la compilation, exécutez le fichier JAR généré avec la commande suivante :
+
 ```bash
-java -jar target/*jar 4 Max Quentin
+java -jar target/<nom_du_jar>.jar <taille_du_plateau> <nom_joueur_1> <nom_joueur_2>
+```
+
+#### **Exemple :**
+```bash
+java -jar target/halma-1.0.jar 4 Max Quentin
 ```
 
 ---
 
-## Interface en Ligne de Commande
+## **Interface en Ligne de Commande**
 
-### Options fournies par l'utilisateur
+### **Options à Fournir :**
 
-1. **Taille du plateau :**
-   - Un entier spécifiant la base du plateau (ex. 3 pour un plateau 9x9, 4 pour un plateau 12x12).
+#### **1. Taille du plateau**
+- Spécifie la base du plateau sous forme d'entier :
+  - Exemple : 
+    - `3` pour un plateau de 9x9 cases.
+    - `4` pour un plateau de 12x12 cases.
 
-2. **Noms des joueurs :**
-   - Les noms des joueurs humains ou l'IA (`AI` pour les joueurs robots).
-   - Exemple : `4 Max Quentin` ou `4 AI Quentin`.
-
-### Règles de validation des arguments
-
-- **Seuls 2 ou 4 joueurs** sont acceptés pour un plateau carré.
-- Si le nombre de joueurs est invalide, le programme rejettera les arguments.
+#### **2. Noms des joueurs**
+- Indiquez les noms des joueurs humains ou utilisez `AI` pour un joueur robot :
+  - Exemple : `4 Max Quentin` ou `4 AI Quentin`.
 
 ---
 
-## Profils d'IA
+## **Règles de Validation des Arguments**
 
-Le projet prend en charge deux profils d'IA :
-
-1. **MadMax (par défaut) :**
-   - Utilise un algorithme aléatoire basé sur un générateur de nombres pseudo-aléatoires semé avec 42.
-   - **Commande :**
-     ```bash
-     mvn exec:java -Pmadmax "-Dexec.args=4 AI AI"
-     ```
-
-2. **Keksli :**
-   - Trie les mouvements possibles et sélectionne le premier.
-   - **Commande :**
-     ```bash
-     mvn exec:java -Pkeksli "-Dexec.args=4 AI Quentin"
-     ```
-
-- Si aucun profil n'est explicitement spécifié, **MadMax sera utilisé par défaut.**
+1. **Nombre de joueurs autorisé :**
+   - Seuls **2 ou 4 joueurs** sont acceptés pour un plateau carré.
+   - Si un nombre invalide de joueurs est fourni, le programme rejettera les arguments.
 
 ---
 
-## Tests
+## **Profils pour les IA**
 
-### Exécution des Tests
+Le projet prend en charge deux profils d'IA pour les joueurs robots. Vous pouvez sélectionner un profil en spécifiant un **profil Maven** au moment de l'exécution.
 
-Pour exécuter les tests unitaires et d'intégration, utilisez la commande suivante :
+### **1. Profil MadMax (par défaut)**
+- Utilise un algorithme basé sur un générateur pseudo-aléatoire semé avec 42.
 
+#### **Commande :**
 ```bash
-mvn test
+mvn exec:java -Pmadmax "-Dexec.args=4 AI AI"
 ```
 
-### Couverture de Test
+### **2. Profil Keksli**
+- Trie les mouvements possibles et sélectionne toujours le premier.
 
-Pour générer un rapport de couverture combinée (unitaires + intégration) avec Jacoco :
-
+#### **Commande :**
 ```bash
-mvn verify
+mvn exec:java -Pkeksli "-Dexec.args=4 AI Quentin"
 ```
 
-Les rapports seront disponibles dans le dossier `target/site/jacoco/`.
+> **Remarque :** Si aucun profil n'est explicitement sélectionné, le profil **MadMax** sera utilisé par défaut.
 
 ---
 
-## Documentation API
+## **Résumé des Commandes**
 
-La documentation API est automatiquement générée et disponible via le job pages du pipeline CI/CD sur GitLab.
-
-### Pour consulter la documentation en local :
+### **Cloner le projet**
 ```bash
-mvn javadoc:javadoc
+git clone <URL_DU_DEPOT>
+cd <nom_du_projet>
 ```
 
-Les fichiers seront générés dans le dossier `target/site/apidocs/`.
+### **Compilation**
+```bash
+mvn clean package
+```
+
+### **Exécution directe avec Maven**
+```bash
+mvn exec:java "-Dexec.args=<taille_du_plateau> <nom_joueur_1> <nom_joueur_2>"
+```
+
+### **Exécution à partir du JAR**
+```bash
+java -jar target/<nom_du_jar>.jar <taille_du_plateau> <nom_joueur_1> <nom_joueur_2>
+```
+
+### **Changer de Profil d'IA**
+- MadMax (par défaut) : `-Pmadmax`
+- Keksli : `-Pkeksli`
