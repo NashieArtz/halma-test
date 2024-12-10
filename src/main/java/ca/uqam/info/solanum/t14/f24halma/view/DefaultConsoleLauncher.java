@@ -96,7 +96,7 @@ public class DefaultConsoleLauncher {
 
     //runTp01();
     //runTp02(players);
-    runTp03();
+    runTp03(args);
   }
 
 
@@ -147,8 +147,31 @@ public class DefaultConsoleLauncher {
   }
 
 
-  private static void runTp03() {
-  //Will be released with TP02 instructions.
+  private static void runTp03(String[] args) {
+
+    // Parse runtime parameters
+    int baseSize = Integer.parseInt(args[0]);
+    String[] playerNames = Arrays.copyOfRange(args, 1, args.length);
+    ModelFactory modelFactory = new SquareModelFactory();
+
+    // Set move selectors (CLI for human players, depending on profile for AIs)
+    // Different launcher classes implementations should use different AIs for AI players
+    MoveSelector[] moveSelectors = playerNamesToMoveSelectors(playerNames);
+
+    // Initialize controller
+    Controller controller = new ControllerImpl(modelFactory, baseSize, playerNames);
+
+    // Initialize visualizer
+    boolean useColours = true;
+    TextualVisualizer visualizer = new TextualVisualizer(useColours);
+
+    // Proceed until game end
+    while (!controller.isGameOver()) {
+      printAndRequestAndPerformAction(controller, visualizer, moveSelectors);
+    }
+
+    System.out.println(visualizer.stringifyModel(controller.getModel()));
+    System.out.println("GAME OVER!");
   }
 
   private static MoveSelector[] playerNamesToMoveSelectors(String[] playerNames) {
