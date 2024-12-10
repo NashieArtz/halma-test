@@ -1,4 +1,3 @@
-
 # **Guide d'Utilisation et Documentation**
 
 ## **Étape 1 : Cloner le Projet depuis Git**
@@ -155,9 +154,18 @@ mvn exec:java "-Dexec.args=<taille_du_plateau> <nom_joueur_1> <nom_joueur_2>"
 
 ### **Exécution à partir du JAR**
 ```bash
-java -jar target/<nom_du_jar>.jar <taille_du_plateau> <nom_joueur_1> <nom_joueur_2>
+java -jar target/<nom_du_jar>.jar <taille_du_plateau> <nom_joueur_1> <nom_joueur_2>"
 ```
 
 ### **Changer de Profil d'IA**
 - MadMax (par défaut) : `-Pmadmax`
 - Keksli : `-Pkeksli`
+
+---
+
+## **Documentation API**
+
+La documentation API générée automatiquement est disponible à l'adresse suivante :
+[Documentation Javadoc](https://halma14-inf2050-2024-hiver-493699e8bddcac8e6977901fb90fc15dc638.pages.info.uqam.ca/)
+
+---
