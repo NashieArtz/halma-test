@@ -1,0 +1,75 @@
+# Rapport de Contribution - [TP3 Equipe 14]
+
+## Membres de l'équipe
+| Nom                   | Groupe      |
+|-----------------------|--------------------------------------|
+| Ayoub EL mouhtassib   | Groupe 14      |
+| Mehdi Ghanem          | Groupe 14      |
+| Ange Wu               | Groupe 14      |
+
+---
+
+## Répartition des tâches
+
+### [Ayoub El mouhtassib]
+- **Tâches effectuées :**
+  - [Tâche 1 : Pom.xml]
+    - **details :** Correction des erreurs dans tp2, rajout toutes dependances necessaires,repository,dependences des interfaces et tests, plugin jar,javadoc,test integration,checkstyle, creation 2 profils MadMax et Keksli dans pom
+    - **Resultat :** pom.xml fonctionnel et sans erreurs
+  - [Tâche 2 : .gitlab-ci.yml]
+    - **details :** Creation du fichier, ecritures des stages (job) avec tous leurs parametres
+    - **Resultat :** tous les jobs passent et javadoc generé automatiquement sur site web
+  - [Tâche 3 : ReadMe.md]
+    - **details :** Creation du fichier, ecriture de toutes les etapes necessaire pour l'installation du projet sur maven
+    - **Resultat :** belle representation du fichier en format .md avec lien vers javadoc sur le web
+  - [Tâche 3 : Classes Java]
+    - **details :** Mise a jour BoardImplTest selon Junit 4
+    - **details :** Creation Nouveau test BoardImpl2Test
+    - **details :** Creation MadMaxIntegrationTest
+    - **details :** Rajout KeksliMoveSelector et MadMaxMoveSelector avec MadMaxMoveSelectorTest
+    - **details :** Rajout Class AbstractSquareFactoryTest
+    - **details :** Mise a jour DefaultConsoleLauncher et integration runtp03
+  - [Tâche 3 : Branches]
+    - **details :** Creation nouvelle branche "SecondBranch" avec rajout de DefaultConsoleLauncherTest et merge reussi avec pipeline reussi aussi
+    - **details :** Integration lien siteweb javadoc dans ReadMe
+
+
+
+
+### [Mehdi Ghanem]
+- **Tâches effectuées :**
+  - [Tâche 1 : Description brève]
+  - [Tâche 2 : Description brève]
+  - [Tâche 3 : Description brève]
+- **Commentaires :**
+  - [Ajoutez des remarques ou des défis rencontrés]
+
+### [Ange Wu]
+- **Tâches effectuées :**
+  - [Tâche 1 : Description brève]
+  - [Tâche 2 : Description brève]
+  - [Tâche 3 : Description brève]
+- **Commentaires :**
+  - [Ajoutez des remarques ou des défis rencontrés]
+
+---
+
+
+## Résumé des contributions
+
+- Interfaces et tests abstraits intégrés via le dépôt Maven tiers 	10% ==> fait dans le pom par Ayoub
+- Build côté serveur configuré sur GitLab CI et réussite 	10% ==> fait par Ayoub
+- Les deux joueurs IA implémentés 	10% ==> **A Faire**
+- Profils de construction fonctionnels pour MadMax et Keksli (JAR + exec lanceur) 	10% ==> **A faire**
+- Tests d'intégration Mad Max dans la phase verify 	10% ==> partiellement fait par Ayoub **A finaliser**
+- Couverture des tests > 90 %, appliquée dans le pom (lignes de code du contrôleur + modèle) 	10% ==> **A faire dans les class , pour le pom, le plugin est deja la**
+- Checkstyle appliqué dans le pom, sans avertissements 	10% ==> fait par Ayoub
+- Javadoc appliqué dans le pom, sans avertissements 	10% ==> fait par Ayoub
+- Documentation d'installation et d'utilisation dans README.md + lien vers les pages javadoc 	5% ==> fait par Ayoub
+- Au moins une demande de fusion acceptée depuis une branche de fonc tionnalité 	5% ==> fait par Ayoub
+- Tous les tests fournis passent 	5% ==> fait par Ayoub
+- Répo sans encombrement, pas de code généré ni de fichiers binaires 	5% ==> fait par Ayoub
+
+---
+
+**Note :** Ce document peut être mis à jour au fur et à mesure de l'avancement du projet.
