@@ -38,11 +38,18 @@
 
 ### [Mehdi Ghanem]
 - **Tâches effectuées :**
-  - [Tâche 1 : Description brève]
-  - [Tâche 2 : Description brève]
-  - [Tâche 3 : Description brève]
+  - [Tâche 1 : Classes Java]
+  - **details :** Mise a jour BoardImpl pour tenter de combler les trous du TP2 (initialisation des pions et rendre la partie jouable entre autres)
+  - **Resultat :** Je n'ai pas reussi a creer les pions et donc a rendre le jeu jouable
+  - **details :** Mise a jour ModelImpl pour tenter de combler les trous du TP2 (initialisation des pions et rendre la partie jouable entre autres)
+  - **Resultats :** Je n'ai pas reussi a creer les pions et donc a rendre le jeu jouable
+  - **details :** Mise a jour ControllerImpl pour tenter de l'adapter au lanceur TP3
+  - **Resultats :** Je ne suis pas parvenu a aller au bout de mon travail (voir commentaire)
+  - **details :** Mise a jour SquareModelFactory pour tenter de l'adapter au lanceur TP3
+  - **Resultats :** Je ne suis pas parvenu a aller au bout de mon travail (voir commentaire)
 - **Commentaires :**
-  - [Ajoutez des remarques ou des défis rencontrés]
+  - Mon role dans ce TP consistait principalement a combler tout ce que l'on a pas reussi a faire au cours du TP2. Cependant, je n'ai pas pu contribuer autant qu'a mon habitude car mon ordinateur s'est casse. Et n'ayant pas d'appareil de rechange qui puisse faire la job, je n'ai donc pas pu pousser mon code sur gitlab car etant incomplet et n'ayant plus acces a mon appareil pour coder. Je n'ai donc pas pu etre aussi impactant dans le travail de mon equipe qu'au cours des deux premiers TP (voir mes contributions au TP1 et TP2 pour preuve). 
+  Je vous prie donc de prendre cela en consideration pour juger nos contributions respectives.
 
 ### [Ange Wu]
 - **Tâches effectuées :**
