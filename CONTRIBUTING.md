@@ -47,17 +47,17 @@
   - **Resultats :** Je ne suis pas parvenu a aller au bout de mon travail (voir commentaire)
   - **details :** Mise a jour SquareModelFactory pour tenter de l'adapter au lanceur TP3
   - **Resultats :** Je ne suis pas parvenu a aller au bout de mon travail (voir commentaire)
+  - **details :** Implementation des deux joueurs IA
+  - **Resultats :** Je ne suis pas parvenu a aller au bout de mon travail (voir commentaire)
 - **Commentaires :**
-  - Mon role dans ce TP consistait principalement a combler tout ce que l'on a pas reussi a faire au cours du TP2. Cependant, je n'ai pas pu contribuer autant qu'a mon habitude car mon ordinateur s'est casse. Et n'ayant pas d'appareil de rechange qui puisse faire la job, je n'ai donc pas pu pousser mon code sur gitlab car etant incomplet et n'ayant plus acces a mon appareil pour coder. Je n'ai donc pas pu etre aussi impactant dans le travail de mon equipe qu'au cours des deux premiers TP (voir mes contributions au TP1 et TP2 pour preuve). 
+  - Mon role dans ce TP consistait principalement a combler tout ce que l'on a pas reussi a faire au cours du TP2. Cependant, je n'ai pas pu contribuer autant qu'a mon habitude car mon ordinateur s'est cassé, perdant donc accès à mon travail. Et n'ayant pas d'appareil de rechange qui puisse faire la job, je n'ai donc pas pu pousser mon code sur gitlab car étant incomplet et n'ayant plus accès à mon appareil pour coder. Je n'ai donc pas pu être aussi impactant dans le travail de mon équipe qu'au cours des deux premiers TP (voir mes contributions au TP1 et TP2 pour preuve).
+
   Je vous prie donc de prendre cela en consideration pour juger nos contributions respectives.
 
 ### [Ange Wu]
 - **Tâches effectuées :**
-  - [Tâche 1 : Description brève]
-  - [Tâche 2 : Description brève]
-  - [Tâche 3 : Description brève]
 - **Commentaires :**
-  - [Ajoutez des remarques ou des défis rencontrés]
+  - N'a pas contribué au TP1, n'a pratiquement pas contribué au TP2 et n'a rien fait au TP3, et ce tout en ne donnant jamais signe d'implication dans l'équipe. Durant tout le semestre, le travail se faisait uniquement à deux (Ayoub et Mehdi). Je vous prie de prendre cela en considération pour les notes finales, car cela a eu une grande conséquence sur nos notes des TPs.
 
 ---
 
@@ -73,9 +73,9 @@
 - Checkstyle appliqué dans le pom, sans avertissements 	10% ==> fait par Ayoub
 - Javadoc appliqué dans le pom, sans avertissements 	10% ==> fait par Ayoub
 - Documentation d'installation et d'utilisation dans README.md + lien vers les pages javadoc 	5% ==> fait par Ayoub
-- Au moins une demande de fusion acceptée depuis une branche de fonc tionnalité 	5% ==> fait par Ayoub
+- Au moins une demande de fusion acceptée depuis une branche de fonctionnalité 	5% ==> fait par Ayoub et Mehdi
 - Tous les tests fournis passent 	5% ==> fait par Ayoub
-- Répo sans encombrement, pas de code généré ni de fichiers binaires 	5% ==> fait par Ayoub
+- Répo sans encombrement, pas de code généré ni de fichiers binaires 	5% ==> fait par Ayoub et Mehdi
 
 ---
 
